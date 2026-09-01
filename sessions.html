@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Sessions | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:#fff;}
+  h1,h2{font-family:Georgia,"Times New Roman",serif; color:var(--navy);}
+  a{color:inherit; text-decoration:none;}
+  .container{max-width:980px; margin:0 auto; padding:0 1.5rem 3rem;}
+
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.4rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-70px; right:-60px; width:200px; height:200px; background:var(--coral); opacity:0.3; border-radius:50%;}
+  header .brandline{display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-bottom:0.6rem; position:relative;}
+  header h1{color:#fff; font-size:1.9rem; position:relative;}
+  header p{color:var(--gold); margin-top:0.3rem; position:relative;}
+  .backlink{display:inline-block; margin-top:1rem; font-size:0.85rem; color:#EDEBF6; text-decoration:underline; position:relative;}
+
+  .currentCard{
+    background:var(--cream); border:2px solid var(--gold); border-radius:16px; padding:1.6rem 1.8rem;
+    margin:2rem 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
+  }
+  .currentCard .label{font-size:0.75rem; font-weight:700; color:var(--coral-dark); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;}
+  .currentCard h3{font-family:Georgia,serif; color:var(--navy); font-size:1.25rem;}
+  .currentCard .meta{color:var(--muted); font-size:0.9rem; margin-top:0.2rem;}
+  .btn{display:inline-block; background:var(--coral); color:#fff; padding:0.7rem 1.4rem; border-radius:999px; font-weight:700; font-size:0.92rem;}
+  .btn:hover{background:var(--coral-dark);}
+
+  table{width:100%; border-collapse:collapse; margin-top:1rem; font-size:0.92rem;}
+  thead th{text-align:left; padding:0.7rem 0.6rem; color:var(--navy); font-family:Georgia,serif; border-bottom:2px solid #EDE8DA;}
+  tbody td{padding:0.7rem 0.6rem; border-bottom:1px solid #F1EEE4; vertical-align:middle;}
+  .numBadge{display:inline-flex; align-items:center; justify-content:center; width:1.9rem; height:1.9rem; border-radius:50%; color:#fff; font-weight:700; font-size:0.85rem;}
+  .phasePill{padding:0.2rem 0.6rem; border-radius:999px; font-size:0.78rem; font-weight:700;}
+  .rowlink{color:var(--coral); font-weight:700; font-size:0.88rem;}
+  .rowlink.secondary{margin-left:0.9rem; color:var(--navy);}
+  .rowlink:hover{text-decoration:underline;}
+  tr.isCurrent{background:#FFF7E6;}
+  tr.isPast .focusCol, tr.isPast .dateCol{color:#B9B4A6;}
+
+  @media (max-width:700px){
+    .focusCol{display:none;}
+    thead th:nth-child(4){display:none;}
+  }
+
+  footer{background:var(--navy-dark); color:#C9CBE0; padding:2rem 0; text-align:center; font-size:0.85rem; margin-top:2rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brandline">
+    <img src="data:image/png;base64,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" width="34" height="34" style="border-radius:50%;">
+    <h1>All Sessions</h1>
+  </div>
+  <p>Next Chapter @ Smith Public Library &bull; 30 weeks, September&ndash;May</p>
+  <a href="index.html" class="backlink">&larr; Back to Home</a>
+</header>
+
+<div class="container">
+
+  <div class="currentCard" id="currentCard">
+    <div>
+      <div class="label">This Week</div>
+      <h3 id="currentTitle">Loading...</h3>
+      <div class="meta" id="currentMeta"></div>
+    </div>
+    <a href="#" id="currentBtn" class="btn">Open This Week's Practice &rarr;</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Topic</th>
+        <th>Focus</th>
+        <th>Practice</th>
+      </tr>
+    </thead>
+    <tbody id="sessionBody">
+      
+    <tr class="sessionRow" data-date="2026-09-14" data-num="1">
+      <td class="numCol"><span class="numBadge" style="background:#FCB41A">1</span></td>
+      <td class="dateCol">Sep 14, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#FCB41A22; color:#FCB41A;">Orientation</span></td>
+      <td class="focusCol">Welcome, program overview, GED Ready diagnostic</td>
+      <td class="linkCol"><a href="session01-practice.html" class="rowlink">Practice &rarr;</a><a href="diagnostic.html" class="rowlink secondary">Diagnostic</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-09-21" data-num="2">
+      <td class="numCol"><span class="numBadge" style="background:#FCB41A">2</span></td>
+      <td class="dateCol">Sep 21, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#FCB41A22; color:#FCB41A;">Orientation</span></td>
+      <td class="focusCol">Diagnostic results, goal-setting, study skills</td>
+      <td class="linkCol"><a href="session02-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-09-28" data-num="3">
+      <td class="numCol"><span class="numBadge" style="background:#F58427">3</span></td>
+      <td class="dateCol">Sep 28, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
+      <td class="focusCol">Whole numbers, fractions, decimals, ratios, percentages</td>
+      <td class="linkCol"><a href="session03-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-10-05" data-num="4">
+      <td class="numCol"><span class="numBadge" style="background:#F58427">4</span></td>
+      <td class="dateCol">Oct 5, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
+      <td class="focusCol">Basic algebra: expressions, solving for x</td>
+      <td class="linkCol"><a href="session04-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-10-19" data-num="5">
+      <td class="numCol"><span class="numBadge" style="background:#F58427">5</span></td>
+      <td class="dateCol">Oct 19, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
+      <td class="focusCol">Linear equations & graphing basics</td>
+      <td class="linkCol"><a href="session05-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-10-26" data-num="6">
+      <td class="numCol"><span class="numBadge" style="background:#F58427">6</span></td>
+      <td class="dateCol">Oct 26, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
+      <td class="focusCol">Geometry & calculator practice</td>
+      <td class="linkCol"><a href="session06-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-11-02" data-num="7">
+      <td class="numCol"><span class="numBadge" style="background:#8E7CC3">7</span></td>
+      <td class="dateCol">Nov 2, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
+      <td class="focusCol">Official GED Ready: Math + debrief</td>
+      <td class="linkCol"><a href="session07-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-11-09" data-num="8">
+      <td class="numCol"><span class="numBadge" style="background:#004B97">8</span></td>
+      <td class="dateCol">Nov 9, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
+      <td class="focusCol">Grammar & mechanics</td>
+      <td class="linkCol"><a href="session08-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-11-16" data-num="9">
+      <td class="numCol"><span class="numBadge" style="background:#004B97">9</span></td>
+      <td class="dateCol">Nov 16, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
+      <td class="focusCol">Reading comprehension</td>
+      <td class="linkCol"><a href="session09-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-11-30" data-num="10">
+      <td class="numCol"><span class="numBadge" style="background:#004B97">10</span></td>
+      <td class="dateCol">Nov 30, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
+      <td class="focusCol">Extended response: argumentative writing</td>
+      <td class="linkCol"><a href="session10-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-12-07" data-num="11">
+      <td class="numCol"><span class="numBadge" style="background:#004B97">11</span></td>
+      <td class="dateCol">Dec 7, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
+      <td class="focusCol">Extended response: evidence & timed drafting</td>
+      <td class="linkCol"><a href="session11-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2026-12-14" data-num="12">
+      <td class="numCol"><span class="numBadge" style="background:#8E7CC3">12</span></td>
+      <td class="dateCol">Dec 14, 2026</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
+      <td class="focusCol">Official GED Ready: RLA + debrief</td>
+      <td class="linkCol"><a href="session12-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-01-11" data-num="13">
+      <td class="numCol"><span class="numBadge" style="background:#77C045">13</span></td>
+      <td class="dateCol">Jan 11, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
+      <td class="focusCol">Life science: cells, genetics, ecosystems</td>
+      <td class="linkCol"><a href="session13-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-01-25" data-num="14">
+      <td class="numCol"><span class="numBadge" style="background:#77C045">14</span></td>
+      <td class="dateCol">Jan 25, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
+      <td class="focusCol">Physical & earth science, reading data</td>
+      <td class="linkCol"><a href="session14-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-02-01" data-num="15">
+      <td class="numCol"><span class="numBadge" style="background:#77C045">15</span></td>
+      <td class="dateCol">Feb 1, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
+      <td class="focusCol">Scientific reasoning & experimental design</td>
+      <td class="linkCol"><a href="session15-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-02-08" data-num="16">
+      <td class="numCol"><span class="numBadge" style="background:#8E7CC3">16</span></td>
+      <td class="dateCol">Feb 8, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
+      <td class="focusCol">Official GED Ready: Science + debrief</td>
+      <td class="linkCol"><a href="session16-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-02-15" data-num="17">
+      <td class="numCol"><span class="numBadge" style="background:#00B2EE">17</span></td>
+      <td class="dateCol">Feb 15, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
+      <td class="focusCol">Civics & government</td>
+      <td class="linkCol"><a href="session17-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-02-22" data-num="18">
+      <td class="numCol"><span class="numBadge" style="background:#00B2EE">18</span></td>
+      <td class="dateCol">Feb 22, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
+      <td class="focusCol">U.S. history</td>
+      <td class="linkCol"><a href="session18-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-03-01" data-num="19">
+      <td class="numCol"><span class="numBadge" style="background:#00B2EE">19</span></td>
+      <td class="dateCol">Mar 1, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
+      <td class="focusCol">Economics basics & primary sources</td>
+      <td class="linkCol"><a href="session19-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-03-08" data-num="20">
+      <td class="numCol"><span class="numBadge" style="background:#00B2EE">20</span></td>
+      <td class="dateCol">Mar 8, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
+      <td class="focusCol">Geography & regional studies</td>
+      <td class="linkCol"><a href="session20-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-03-22" data-num="21">
+      <td class="numCol"><span class="numBadge" style="background:#8E7CC3">21</span></td>
+      <td class="dateCol">Mar 22, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
+      <td class="focusCol">Official GED Ready: Social Studies + debrief</td>
+      <td class="linkCol"><a href="session21-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-03-29" data-num="22">
+      <td class="numCol"><span class="numBadge" style="background:#F58427">22</span></td>
+      <td class="dateCol">Mar 29, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
+      <td class="focusCol">Mixed timed practice & error analysis</td>
+      <td class="linkCol"><a href="session22-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-04-05" data-num="23">
+      <td class="numCol"><span class="numBadge" style="background:#004B97">23</span></td>
+      <td class="dateCol">Apr 5, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
+      <td class="focusCol">Advanced grammar & rhetorical analysis</td>
+      <td class="linkCol"><a href="session23-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-04-12" data-num="24">
+      <td class="numCol"><span class="numBadge" style="background:#004B97">24</span></td>
+      <td class="dateCol">Apr 12, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
+      <td class="focusCol">Extended response: timed full essays</td>
+      <td class="linkCol"><a href="session24-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-04-19" data-num="25">
+      <td class="numCol"><span class="numBadge" style="background:#77C045">25</span></td>
+      <td class="dateCol">Apr 19, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
+      <td class="focusCol">Mixed timed practice & error analysis</td>
+      <td class="linkCol"><a href="session25-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-04-26" data-num="26">
+      <td class="numCol"><span class="numBadge" style="background:#8E7CC3">26</span></td>
+      <td class="dateCol">Apr 26, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
+      <td class="focusCol">Official GED Ready retest opportunity</td>
+      <td class="linkCol"><a href="session26-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-05-03" data-num="27">
+      <td class="numCol"><span class="numBadge" style="background:#4A6FA5">27</span></td>
+      <td class="dateCol">May 3, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#4A6FA522; color:#4A6FA5;">Review</span></td>
+      <td class="focusCol">Cumulative review, all 4 subjects</td>
+      <td class="linkCol"><a href="session27-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-05-10" data-num="28">
+      <td class="numCol"><span class="numBadge" style="background:#5B8C99">28</span></td>
+      <td class="dateCol">May 10, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#5B8C9922; color:#5B8C99;">Test-Ready Sprint</span></td>
+      <td class="focusCol">Small groups by weak subject area</td>
+      <td class="linkCol"><a href="session28-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-05-17" data-num="29">
+      <td class="numCol"><span class="numBadge" style="background:#5B8C99">29</span></td>
+      <td class="dateCol">May 17, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#5B8C9922; color:#5B8C99;">Test-Ready Sprint</span></td>
+      <td class="focusCol">Test registration & OnVUE walkthrough</td>
+      <td class="linkCol"><a href="session29-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+
+    <tr class="sessionRow" data-date="2027-05-24" data-num="30">
+      <td class="numCol"><span class="numBadge" style="background:#D96F1A">30</span></td>
+      <td class="dateCol">May 24, 2027</td>
+      <td class="phaseCol"><span class="phasePill" style="background:#D96F1A22; color:#D96F1A;">Closing</span></td>
+      <td class="focusCol">Final Q&A, celebration, next steps</td>
+      <td class="linkCol"><a href="session30-practice.html" class="rowlink">Practice &rarr;</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>&copy; 2026 Next Chapter @ Smith Public Library &bull; A GED Prep Program</footer>
+
+<script>
+  // Auto-detect current week based on today's date vs. session dates.
+  const rows = Array.from(document.querySelectorAll(".sessionRow"));
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  let currentRow = null;
+  for (let i = 0; i < rows.length; i++) {
+    const rowDate = new Date(rows[i].dataset.date + "T00:00:00");
+    const nextDate = i + 1 < rows.length ? new Date(rows[i+1].dataset.date + "T00:00:00") : null;
+    if (today >= rowDate && (nextDate === null || today < nextDate)) {
+      currentRow = rows[i];
+    }
+    if (today < rowDate && currentRow === null && i === 0) {
+      currentRow = rows[0]; // before program starts, point to Session 1
+    }
+    if (rowDate < today && (nextDate === null || nextDate <= today)) {
+      rows[i].classList.add("isPast");
+    }
+  }
+  if (!currentRow) currentRow = rows[rows.length - 1]; // after program ends
+
+  currentRow.classList.add("isCurrent");
+  const num = currentRow.dataset.num;
+  const focus = currentRow.querySelector(".focusCol").textContent;
+  const dateStr = currentRow.querySelector(".dateCol").textContent;
+  const practiceLink = currentRow.querySelector(".rowlink").getAttribute("href");
+
+  document.getElementById("currentTitle").textContent = "Session " + num + ": " + focus;
+  document.getElementById("currentMeta").textContent = dateStr;
+  document.getElementById("currentBtn").href = practiceLink;
+
+  // Scroll the current row into view within the table on load
+  currentRow.scrollIntoView({ block: "center", behavior: "instant" });
+</script>
+
+</body>
+</html>

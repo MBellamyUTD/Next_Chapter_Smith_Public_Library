@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GED Prep &mdash; Session 1 Take-Home Practice</title>
+<style>
+  :root{
+    --navy:#004B97;
+    --navy-dark:#003a75;
+    --coral:#F58427;
+    --coral-dark:#d96f1a;
+    --gold:#FCB41A;
+    --cream:#FFFBF2;
+    --ink:#2B2B2B;
+    --muted:#6B6B76;
+    --good:#3C7A64;
+    --bad:#C94C4C;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:2.2rem 1.5rem 2.6rem;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute;
+    top:-60px; right:-60px;
+    width:180px; height:180px;
+    background:var(--coral);
+    opacity:0.35;
+    border-radius:50%;
+  }
+  header h1{
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:1.9rem;
+    margin:0 0 0.4rem;
+    position:relative;
+  }
+  header p{
+    margin:0;
+    color:var(--gold);
+    font-size:1rem;
+    position:relative;
+  }
+  .wrap{
+    max-width:760px;
+    margin:-1.6rem auto 3rem;
+    padding:0 1.2rem;
+    position:relative;
+  }
+  nav.tabs{
+    display:flex;
+    gap:0.5rem;
+    background:#fff;
+    border-radius:16px;
+    padding:0.4rem;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom:1.5rem;
+  }
+  nav.tabs button{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:0.75rem 0.5rem;
+    font-size:0.92rem;
+    font-weight:600;
+    color:var(--muted);
+    border-radius:12px;
+    cursor:pointer;
+    transition:background 0.15s, color 0.15s;
+  }
+  nav.tabs button.active{
+    background:var(--navy);
+    color:#fff;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fadeIn 0.25s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .card{
+    background:#fff;
+    border-radius:16px;
+    padding:1.5rem 1.6rem;
+    margin-bottom:1.3rem;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+  }
+  .card h2{
+    font-family:Georgia, serif;
+    font-size:1.15rem;
+    color:var(--navy);
+    margin:0 0 0.2rem;
+  }
+  .badge{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--navy-dark);
+    font-size:0.72rem;
+    font-weight:700;
+    padding:0.2rem 0.6rem;
+    border-radius:999px;
+    margin-bottom:0.6rem;
+    letter-spacing:0.03em;
+  }
+  .prompt{font-size:1rem; margin:0.6rem 0 1rem; line-height:1.5;}
+
+  /* Multiple choice */
+  .options{display:flex; flex-direction:column; gap:0.55rem;}
+  .opt{
+    text-align:left;
+    padding:0.7rem 0.9rem;
+    border:2px solid #E7E4DA;
+    border-radius:10px;
+    background:#fff;
+    font-size:0.96rem;
+    cursor:pointer;
+    transition:border-color 0.15s, background 0.15s;
+  }
+  .opt:hover{border-color:var(--coral);}
+  .opt.correct{border-color:var(--good); background:#EAF5F0; font-weight:600;}
+  .opt.incorrect{border-color:var(--bad); background:#FBEAEA;}
+  .feedback{margin-top:0.8rem; font-size:0.92rem; padding:0.7rem 0.9rem; border-radius:10px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:#EAF5F0; color:var(--good);}
+  .feedback.bad{background:#FBEAEA; color:var(--bad);}
+
+  /* Drag and drop */
+  .dragList{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.5rem;}
+  .dragItem{
+    background:var(--cream);
+    border:2px dashed #E0D9C8;
+    border-radius:10px;
+    padding:0.65rem 0.9rem;
+    cursor:grab;
+    font-size:0.95rem;
+    user-select:none;
+  }
+  .dragItem.dragging{opacity:0.4;}
+  .dragItem .num{
+    display:inline-block; width:1.5rem; height:1.5rem; border-radius:50%;
+    background:var(--navy); color:#fff; font-size:0.8rem; font-weight:700;
+    text-align:center; line-height:1.5rem; margin-right:0.6rem;
+  }
+  button.check{
+    margin-top:1rem;
+    background:var(--coral);
+    color:#fff;
+    border:none;
+    padding:0.6rem 1.3rem;
+    border-radius:999px;
+    font-weight:700;
+    font-size:0.92rem;
+    cursor:pointer;
+  }
+  button.check:hover{background:var(--coral-dark);}
+
+  /* Fill in blank */
+  input[type=text]{
+    padding:0.6rem 0.8rem;
+    border:2px solid #E7E4DA;
+    border-radius:10px;
+    font-size:0.95rem;
+    width:100%;
+    max-width:220px;
+  }
+  input[type=text]:focus{outline:none; border-color:var(--navy);}
+
+  /* Highlight */
+  .passage{font-size:1rem; line-height:1.9; }
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
+
+  /* Goals tab */
+  label{display:block; font-weight:700; color:var(--navy); margin-bottom:0.4rem; font-size:0.95rem;}
+  textarea, select{
+    width:100%;
+    padding:0.7rem 0.85rem;
+    border:2px solid #E7E4DA;
+    border-radius:10px;
+    font-size:0.95rem;
+    font-family:inherit;
+    resize:vertical;
+  }
+  textarea:focus, select:focus{outline:none; border-color:var(--navy);}
+  .field{margin-bottom:1.2rem;}
+  button.save{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:0.7rem 1.5rem;
+    border-radius:999px;
+    font-weight:700;
+    font-size:0.95rem;
+    cursor:pointer;
+  }
+  button.save:hover{background:var(--navy-dark);}
+  .savedNote{font-size:0.85rem; color:var(--good); margin-top:0.6rem; display:none;}
+  .savedNote.show{display:block;}
+
+  /* Confidence sliders */
+  .sliderRow{margin-bottom:1.5rem;}
+  .sliderRow .top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;}
+  .sliderRow .top span.val{font-weight:700; color:var(--coral);}
+  input[type=range]{width:100%; accent-color:var(--coral);}
+  .scaleLabels{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;}
+
+  .footNote{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.82rem;
+    margin-top:1.5rem;
+    padding-bottom:1rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Session 1 Take-Home Practice</h1>
+  <p>Just 10 minutes &mdash; get comfortable with the test before Session 2</p>
+</header>
+
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="format">Meet the Test</button>
+    <button class="tab-btn" data-tab="goals">Set Your Goals</button>
+    <button class="tab-btn" data-tab="confidence">Check In</button>
+  </nav>
+
+  <!-- TAB 1: Meet the Test -->
+  <section class="panel active" id="panel-format">
+
+    <div class="card">
+      <span class="badge">MULTIPLE CHOICE</span>
+      <h2>Click the best answer</h2>
+      <p class="prompt">Which of these numbers is a prime number?</p>
+      <div class="options" id="mcOptions">
+        <button class="opt" data-correct="false">21</button>
+        <button class="opt" data-correct="false">27</button>
+        <button class="opt" data-correct="true">29</button>
+        <button class="opt" data-correct="false">33</button>
+      </div>
+      <div class="feedback" id="mcFeedback"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">DRAG &amp; DROP</span>
+      <h2>Put these steps in the right order</h2>
+      <p class="prompt">Drag to arrange the steps for solving <strong>3x + 5 = 20</strong>:</p>
+      <ul class="dragList" id="dragList">
+        <li class="dragItem" draggable="true" data-order="2"><span class="num">?</span>Divide both sides by 3</li>
+        <li class="dragItem" draggable="true" data-order="1"><span class="num">?</span>Subtract 5 from both sides</li>
+        <li class="dragItem" draggable="true" data-order="3"><span class="num">?</span>Solve: x = 5</li>
+      </ul>
+      <button class="check" id="dragCheck">Check My Order</button>
+      <div class="feedback" id="dragFeedback"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">FILL IN THE BLANK</span>
+      <h2>Type your answer</h2>
+      <p class="prompt">The capital of Texas is ______.</p>
+      <input type="text" id="blankInput" placeholder="Type here">
+      <button class="check" id="blankCheck">Check My Answer</button>
+      <div class="feedback" id="blankFeedback"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">HIGHLIGHT IN TEXT</span>
+      <h2>Click the sentence that answers the question</h2>
+      <p class="prompt">Which sentence tells you <em>why</em> the library added GED classes?</p>
+      <p class="passage" id="passage">
+        <span class="seg" data-correct="false">The library has been open on Monroe Street since 1974.</span>
+        <span class="seg" data-correct="true">A private donor asked the library to start offering GED classes for adults in the community.</span>
+        <span class="seg" data-correct="false">Classes will run every Monday evening starting this fall.</span>
+      </p>
+      <div class="feedback" id="passageFeedback"></div>
+    </div>
+
+  </section>
+
+  <!-- TAB 2: Goals -->
+  <section class="panel" id="panel-goals">
+    <div class="card">
+      <h2>Why are you here?</h2>
+      <p class="prompt">There's no wrong answer &mdash; this is just for you to look back on later.</p>
+      <div class="field">
+        <label for="goalWhy">What's motivating you to get your GED?</label>
+        <textarea id="goalWhy" rows="3" placeholder="e.g., I want to qualify for a better job, or set an example for my kids..."></textarea>
+      </div>
+      <div class="field">
+        <label for="goalMonth">When would you like to have your GED completed?</label>
+        <select id="goalMonth">
+          <option value="">Select a target month</option>
+          <option>Before the end of 2026</option>
+          <option>January 2027</option>
+          <option>February 2027</option>
+          <option>March 2027</option>
+          <option>April 2027</option>
+          <option>May 2027</option>
+          <option>No rush &mdash; just want to keep moving forward</option>
+        </select>
+      </div>
+      <button class="save" id="saveGoals">Save My Goals</button>
+      <div class="savedNote" id="goalsSaved">Saved! You can update this anytime.</div>
+    </div>
+  </section>
+
+  <!-- TAB 3: Confidence -->
+  <section class="panel" id="panel-confidence">
+    <div class="card">
+      <h2>How confident do you feel right now?</h2>
+      <p class="prompt">Be honest &mdash; this is just for you to track how you're feeling week to week. No wrong answers.</p>
+
+      <div class="sliderRow" data-subject="Math">
+        <div class="top"><span>Math</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="RLA">
+        <div class="top"><span>Reading &amp; Writing (RLA)</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Science">
+        <div class="top"><span>Science</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Social Studies">
+        <div class="top"><span>Social Studies</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+
+      <button class="save" id="saveConfidence">Save My Check-In</button>
+      <div class="savedNote" id="confidenceSaved">Saved! We'll check back in after checkpoints.</div>
+    </div>
+  </section>
+
+  <p class="footNote">Your answers are saved on this device only (not shared with your instructor or other students). If you switch computers, they won't carry over. Questions? Bring them to Thursday office hours.</p>
+</div>
+
+<script>
+// ---------- Tabs ----------
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ---------- Multiple choice ----------
+document.querySelectorAll("#mcOptions .opt").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const correct = btn.dataset.correct === "true";
+    document.querySelectorAll("#mcOptions .opt").forEach(b => b.disabled = true);
+    btn.classList.add(correct ? "correct" : "incorrect");
+    if (!correct) {
+      document.querySelectorAll("#mcOptions .opt").forEach(b => {
+        if (b.dataset.correct === "true") b.classList.add("correct");
+      });
+    }
+    const fb = document.getElementById("mcFeedback");
+    fb.classList.add("show", correct ? "good" : "bad");
+    fb.textContent = correct
+      ? "Correct! 29 can only be divided evenly by 1 and itself."
+      : "Not quite \u2014 29 is the prime number here. The others can all be divided evenly by 3.";
+  });
+});
+
+// ---------- Drag and drop ----------
+const dragList = document.getElementById("dragList");
+let dragEl = null;
+dragList.querySelectorAll(".dragItem").forEach(item => {
+  item.addEventListener("dragstart", () => { dragEl = item; item.classList.add("dragging"); });
+  item.addEventListener("dragend", () => item.classList.remove("dragging"));
+});
+dragList.addEventListener("dragover", e => {
+  e.preventDefault();
+  const after = [...dragList.querySelectorAll(".dragItem:not(.dragging)")].find(el => {
+    const box = el.getBoundingClientRect();
+    return e.clientY < box.top + box.height / 2;
+  });
+  if (after) dragList.insertBefore(dragEl, after);
+  else dragList.appendChild(dragEl);
+});
+document.getElementById("dragCheck").addEventListener("click", () => {
+  const order = [...dragList.querySelectorAll(".dragItem")].map(el => el.dataset.order);
+  const correct = order.join(",") === "1,2,3";
+  const fb = document.getElementById("dragFeedback");
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct
+    ? "Correct order! Subtract, divide, solve."
+    : "Not quite yet \u2014 remember: undo addition/subtraction first, then division. Try rearranging.";
+});
+
+// ---------- Fill in blank ----------
+document.getElementById("blankCheck").addEventListener("click", () => {
+  const val = document.getElementById("blankInput").value.trim().toLowerCase();
+  const correct = val === "austin";
+  const fb = document.getElementById("blankFeedback");
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct ? "Correct! Austin is the capital of Texas." : "Not quite \u2014 the answer is Austin.";
+});
+
+// ---------- Highlight passage ----------
+document.querySelectorAll("#passage .seg").forEach(seg => {
+  seg.addEventListener("click", () => {
+    const correct = seg.dataset.correct === "true";
+    document.querySelectorAll("#passage .seg").forEach(s => s.style.pointerEvents = "none");
+    seg.classList.add(correct ? "correct" : "incorrect");
+    if (!correct) {
+      document.querySelectorAll("#passage .seg").forEach(s => { if (s.dataset.correct === "true") s.classList.add("correct"); });
+    }
+    const fb = document.getElementById("passageFeedback");
+    fb.classList.add("show", correct ? "good" : "bad");
+    fb.textContent = correct
+      ? "Right \u2014 that sentence gives the reason (\u201ca private donor asked...\u201d)."
+      : "The highlighted sentence explains why \u2014 the others just give background details or a schedule.";
+  });
+});
+
+// ---------- Persistent storage helpers (browser-local; per-device) ----------
+async function loadGoals() {
+  try {
+    const raw = localStorage.getItem("session1-goals");
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.getElementById("goalWhy").value = data.why || "";
+      document.getElementById("goalMonth").value = data.month || "";
+    }
+  } catch (e) { /* no saved data yet */ }
+}
+async function loadConfidence() {
+  try {
+    const raw = localStorage.getItem("session1-confidence");
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.querySelectorAll(".sliderRow").forEach(row => {
+        const subject = row.dataset.subject;
+        if (data[subject] !== undefined) {
+          const input = row.querySelector("input[type=range]");
+          input.value = data[subject];
+          row.querySelector(".val").textContent = data[subject];
+        }
+      });
+    }
+  } catch (e) { /* no saved data yet */ }
+}
+
+document.querySelectorAll(".sliderRow input[type=range]").forEach(input => {
+  input.addEventListener("input", () => {
+    input.closest(".sliderRow").querySelector(".val").textContent = input.value;
+  });
+});
+
+document.getElementById("saveGoals").addEventListener("click", async () => {
+  const data = {
+    why: document.getElementById("goalWhy").value,
+    month: document.getElementById("goalMonth").value,
+  };
+  try {
+    localStorage.setItem("session1-goals", JSON.stringify(data));
+    const note = document.getElementById("goalsSaved");
+    note.classList.add("show");
+    setTimeout(() => note.classList.remove("show"), 3000);
+  } catch (e) { console.error("Could not save goals", e); }
+});
+
+document.getElementById("saveConfidence").addEventListener("click", async () => {
+  const data = {};
+  document.querySelectorAll(".sliderRow").forEach(row => {
+    data[row.dataset.subject] = row.querySelector("input[type=range]").value;
+  });
+  try {
+    localStorage.setItem("session1-confidence", JSON.stringify(data));
+    const note = document.getElementById("confidenceSaved");
+    note.classList.add("show");
+    setTimeout(() => note.classList.remove("show"), 3000);
+  } catch (e) { console.error("Could not save confidence", e); }
+});
+
+loadGoals();
+loadConfidence();
+</script>
+
+</body>
+</html>
