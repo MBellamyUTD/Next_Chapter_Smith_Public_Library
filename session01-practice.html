@@ -232,6 +232,7 @@
   <h1>Session 1 Take-Home Practice</h1>
   <p>Just 10 minutes &mdash; get comfortable with the test before Session 2</p>
   <a href="sessions.html" style="display:inline-block; margin-top:0.8rem; color:#EDEBF6; font-size:0.85rem; text-decoration:underline; position:relative;">&larr; All Sessions</a>
+  <a href="progress.html" style="display:inline-block; margin-top:0.8rem; margin-left:1.2rem; color:#EDEBF6; font-size:0.85rem; text-decoration:underline; position:relative;">My Progress</a>
 </header>
 
 <div class="wrap">
@@ -450,7 +451,7 @@ async function loadGoals() {
 }
 async function loadConfidence() {
   try {
-    const raw = localStorage.getItem("session1-confidence");
+    const raw = localStorage.getItem("confidence-week-01");
     if (raw) {
       const data = JSON.parse(raw);
       document.querySelectorAll(".sliderRow").forEach(row => {
@@ -490,7 +491,8 @@ document.getElementById("saveConfidence").addEventListener("click", async () => 
     data[row.dataset.subject] = row.querySelector("input[type=range]").value;
   });
   try {
-    localStorage.setItem("session1-confidence", JSON.stringify(data));
+    localStorage.setItem("confidence-week-01", JSON.stringify(data));
+    localStorage.setItem("completed-week-01", new Date().toISOString());
     const note = document.getElementById("confidenceSaved");
     note.classList.add("show");
     setTimeout(() => note.classList.remove("show"), 3000);

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Progress | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76; --good:#3C7A64;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:#fff;}
+  h1,h2{font-family:Georgia,"Times New Roman",serif; color:var(--navy);}
+  a{color:inherit; text-decoration:none;}
+  .container{max-width:900px; margin:0 auto; padding:0 1.5rem 3rem;}
+
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.4rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-70px; right:-60px; width:200px; height:200px; background:var(--coral); opacity:0.3; border-radius:50%;}
+  header .brandline{display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-bottom:0.6rem; position:relative;}
+  header h1{color:#fff; font-size:1.9rem; position:relative;}
+  header p{color:var(--gold); margin-top:0.3rem; position:relative;}
+  .backlinks{margin-top:1rem; position:relative;}
+  .backlinks a{display:inline-block; color:#EDEBF6; font-size:0.85rem; text-decoration:underline; margin:0 0.6rem;}
+
+  .card{background:#fff; border:1px solid #EDE8DA; border-radius:16px; padding:1.8rem; margin:2rem 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .card h2{font-size:1.3rem; margin-bottom:0.4rem;}
+  .card .sub{color:var(--muted); font-size:0.9rem; margin-bottom:1.2rem;}
+
+  .weekGrid{display:grid; grid-template-columns:repeat(10, 1fr); gap:0.5rem;}
+  @media (max-width:640px){.weekGrid{grid-template-columns:repeat(6, 1fr);}}
+  .weekBadge{
+    aspect-ratio:1; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:0.85rem; background:#F1EEE4; color:#B9B4A6;
+  }
+  .weekBadge.done{background:var(--good); color:#fff;}
+  .weekBadge.done:hover{opacity:0.85; cursor:pointer;}
+
+  table{width:100%; border-collapse:collapse; margin-top:0.5rem; font-size:0.9rem;}
+  thead th{text-align:left; padding:0.6rem; color:var(--navy); font-family:Georgia,serif; border-bottom:2px solid #EDE8DA;}
+  tbody td{padding:0.6rem; border-bottom:1px solid #F1EEE4;}
+  .confCell{display:inline-flex; align-items:center; justify-content:center; width:1.8rem; height:1.8rem; border-radius:50%; color:#fff; font-weight:700; font-size:0.85rem;}
+
+  .emptyState{color:var(--muted); font-size:0.92rem; padding:1rem 0;}
+  .noteBox{background:var(--cream); border-radius:12px; padding:1rem 1.2rem; font-size:0.85rem; color:var(--muted); margin-top:1.5rem;}
+
+  footer{background:var(--navy-dark); color:#C9CBE0; padding:2rem 0; text-align:center; font-size:0.85rem; margin-top:2rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brandline">
+    <img src="data:image/png;base64,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" width="34" height="34" style="border-radius:50%;">
+    <h1>My Progress</h1>
+  </div>
+  <p>Next Chapter @ Smith Public Library</p>
+  <div class="backlinks">
+    <a href="index.html">&larr; Home</a>
+    <a href="sessions.html">All Sessions</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Weeks Completed</h2>
+    <p class="sub">Filled-in weeks are ones you've checked in on this device. Click a completed week to revisit it.</p>
+    <div class="weekGrid" id="weekGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>Confidence Over Time</h2>
+    <p class="sub">Your own weekly check-ins, 1 (not confident) to 5 (very confident).</p>
+    <div id="confidenceArea"></div>
+  </div>
+
+  <div class="noteBox">
+    This page reads data saved in this browser on this device only. If you use a different computer, your progress here will start fresh &mdash; but your official diagnostic and checkpoint results are always on file with your instructor regardless of which device you use.
+  </div>
+</div>
+
+<footer>&copy; 2026 Next Chapter @ Smith Public Library &bull; A GED Prep Program</footer>
+
+<script>
+  const TOTAL_WEEKS = 30;
+  const SUBJECTS = ["Math", "RLA", "Science", "Social Studies"];
+  const SUBJECT_COLORS = {"Math":"#F58427","RLA":"#004B97","Science":"#77C045","Social Studies":"#00B2EE"};
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+
+  // ---- Weeks completed grid ----
+  const grid = document.getElementById("weekGrid");
+  for (let i = 1; i <= TOTAL_WEEKS; i++) {
+    const key = "completed-week-" + pad(i);
+    const done = !!localStorage.getItem(key);
+    const badge = document.createElement(done ? "a" : "div");
+    badge.className = "weekBadge" + (done ? " done" : "");
+    badge.textContent = i;
+    if (done) {
+      badge.href = "session" + pad(i) + "-practice.html";
+      badge.title = "Revisit Week " + i;
+    }
+    grid.appendChild(badge);
+  }
+
+  // ---- Confidence trend table ----
+  const rows = [];
+  for (let i = 1; i <= TOTAL_WEEKS; i++) {
+    const raw = localStorage.getItem("confidence-week-" + pad(i));
+    if (raw) {
+      try { rows.push({ week: i, data: JSON.parse(raw) }); } catch (e) {}
+    }
+  }
+
+  const area = document.getElementById("confidenceArea");
+  if (rows.length === 0) {
+    area.innerHTML = '<p class="emptyState">No check-ins yet on this device. Complete a week\'s take-home practice to start tracking this.</p>';
+  } else {
+    let html = "<table><thead><tr><th>Week</th>";
+    SUBJECTS.forEach(s => html += "<th>" + s + "</th>");
+    html += "</tr></thead><tbody>";
+    rows.forEach(r => {
+      html += "<tr><td>Week " + r.week + "</td>";
+      SUBJECTS.forEach(s => {
+        const val = r.data[s];
+        if (val === undefined) { html += "<td>&mdash;</td>"; return; }
+        const color = SUBJECT_COLORS[s];
+        html += '<td><span class="confCell" style="background:' + color + '">' + val + "</span></td>";
+      });
+      html += "</tr>";
+    });
+    html += "</tbody></table>";
+    area.innerHTML = html;
+  }
+</script>
+
+</body>
+</html>
