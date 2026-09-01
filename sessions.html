@@ -31,6 +31,8 @@
   .currentCard .meta{color:var(--muted); font-size:0.9rem; margin-top:0.2rem;}
   .btn{display:inline-block; background:var(--coral); color:#fff; padding:0.7rem 1.4rem; border-radius:999px; font-weight:700; font-size:0.92rem;}
   .btn:hover{background:var(--coral-dark);}
+  .btn-outline{background:#fff; color:var(--navy); border:2px solid var(--navy);}
+  .btn-outline:hover{background:var(--navy); color:#fff;}
 
   table{width:100%; border-collapse:collapse; margin-top:1rem; font-size:0.92rem;}
   thead th{text-align:left; padding:0.7rem 0.6rem; color:var(--navy); font-family:Georgia,serif; border-bottom:2px solid #EDE8DA;}
@@ -38,6 +40,7 @@
   .numBadge{display:inline-flex; align-items:center; justify-content:center; width:1.9rem; height:1.9rem; border-radius:50%; color:#fff; font-weight:700; font-size:0.85rem;}
   .phasePill{padding:0.2rem 0.6rem; border-radius:999px; font-size:0.78rem; font-weight:700;}
   .rowlink{color:var(--coral); font-weight:700; font-size:0.88rem;}
+  .rowlink.slideslink{color:var(--navy); margin-right:0.9rem;}
   .rowlink.secondary{margin-left:0.9rem; color:var(--navy);}
   .rowlink:hover{text-decoration:underline;}
   tr.isCurrent{background:#FFF7E6;}
@@ -70,7 +73,10 @@
       <h3 id="currentTitle">Loading...</h3>
       <div class="meta" id="currentMeta"></div>
     </div>
-    <a href="#" id="currentBtn" class="btn">Open This Week's Practice &rarr;</a>
+    <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
+      <a href="#" id="currentSlidesBtn" class="btn btn-outline" target="_blank" rel="noopener">View Slides</a>
+      <a href="#" id="currentBtn" class="btn">Open This Week's Practice &rarr;</a>
+    </div>
   </div>
 
   <table>
@@ -80,249 +86,339 @@
         <th>Date</th>
         <th>Topic</th>
         <th>Focus</th>
-        <th>Practice</th>
+        <th>Materials</th>
       </tr>
     </thead>
     <tbody id="sessionBody">
       
-    <tr class="sessionRow" data-date="2026-09-14" data-num="1">
+    <tr class="sessionRow" data-date="2026-09-14" data-num="1" data-practice="session01-practice.html" data-slides="session01-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#FCB41A">1</span></td>
       <td class="dateCol">Sep 14, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#FCB41A22; color:#FCB41A;">Orientation</span></td>
       <td class="focusCol">Welcome, program overview, GED Ready diagnostic</td>
-      <td class="linkCol"><a href="session01-practice.html" class="rowlink">Practice &rarr;</a><a href="diagnostic.html" class="rowlink secondary">Diagnostic</a></td>
+      <td class="linkCol">
+        <a href="session01-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session01-practice.html" class="rowlink">Practice &rarr;</a><a href="diagnostic.html" class="rowlink secondary">Diagnostic</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-09-21" data-num="2">
+    <tr class="sessionRow" data-date="2026-09-21" data-num="2" data-practice="session02-practice.html" data-slides="session02-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#FCB41A">2</span></td>
       <td class="dateCol">Sep 21, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#FCB41A22; color:#FCB41A;">Orientation</span></td>
       <td class="focusCol">Diagnostic results, goal-setting, study skills</td>
-      <td class="linkCol"><a href="session02-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session02-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session02-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-09-28" data-num="3">
+    <tr class="sessionRow" data-date="2026-09-28" data-num="3" data-practice="session03-practice.html" data-slides="session03-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#F58427">3</span></td>
       <td class="dateCol">Sep 28, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
       <td class="focusCol">Whole numbers, fractions, decimals, ratios, percentages</td>
-      <td class="linkCol"><a href="session03-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session03-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session03-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-10-05" data-num="4">
+    <tr class="sessionRow" data-date="2026-10-05" data-num="4" data-practice="session04-practice.html" data-slides="session04-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#F58427">4</span></td>
       <td class="dateCol">Oct 5, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
       <td class="focusCol">Basic algebra: expressions, solving for x</td>
-      <td class="linkCol"><a href="session04-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session04-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session04-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-10-19" data-num="5">
+    <tr class="sessionRow" data-date="2026-10-19" data-num="5" data-practice="session05-practice.html" data-slides="session05-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#F58427">5</span></td>
       <td class="dateCol">Oct 19, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
       <td class="focusCol">Linear equations & graphing basics</td>
-      <td class="linkCol"><a href="session05-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session05-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session05-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-10-26" data-num="6">
+    <tr class="sessionRow" data-date="2026-10-26" data-num="6" data-practice="session06-practice.html" data-slides="session06-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#F58427">6</span></td>
       <td class="dateCol">Oct 26, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
       <td class="focusCol">Geometry & calculator practice</td>
-      <td class="linkCol"><a href="session06-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session06-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session06-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-11-02" data-num="7">
+    <tr class="sessionRow" data-date="2026-11-02" data-num="7" data-practice="session07-practice.html" data-slides="session07-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#8E7CC3">7</span></td>
       <td class="dateCol">Nov 2, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
       <td class="focusCol">Official GED Ready: Math + debrief</td>
-      <td class="linkCol"><a href="session07-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session07-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session07-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-11-09" data-num="8">
+    <tr class="sessionRow" data-date="2026-11-09" data-num="8" data-practice="session08-practice.html" data-slides="session08-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#004B97">8</span></td>
       <td class="dateCol">Nov 9, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
       <td class="focusCol">Grammar & mechanics</td>
-      <td class="linkCol"><a href="session08-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session08-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session08-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-11-16" data-num="9">
+    <tr class="sessionRow" data-date="2026-11-16" data-num="9" data-practice="session09-practice.html" data-slides="session09-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#004B97">9</span></td>
       <td class="dateCol">Nov 16, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
       <td class="focusCol">Reading comprehension</td>
-      <td class="linkCol"><a href="session09-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session09-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session09-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-11-30" data-num="10">
+    <tr class="sessionRow" data-date="2026-11-30" data-num="10" data-practice="session10-practice.html" data-slides="session10-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#004B97">10</span></td>
       <td class="dateCol">Nov 30, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
       <td class="focusCol">Extended response: argumentative writing</td>
-      <td class="linkCol"><a href="session10-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session10-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session10-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-12-07" data-num="11">
+    <tr class="sessionRow" data-date="2026-12-07" data-num="11" data-practice="session11-practice.html" data-slides="session11-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#004B97">11</span></td>
       <td class="dateCol">Dec 7, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
       <td class="focusCol">Extended response: evidence & timed drafting</td>
-      <td class="linkCol"><a href="session11-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session11-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session11-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2026-12-14" data-num="12">
+    <tr class="sessionRow" data-date="2026-12-14" data-num="12" data-practice="session12-practice.html" data-slides="session12-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#8E7CC3">12</span></td>
       <td class="dateCol">Dec 14, 2026</td>
       <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
       <td class="focusCol">Official GED Ready: RLA + debrief</td>
-      <td class="linkCol"><a href="session12-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session12-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session12-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-01-11" data-num="13">
+    <tr class="sessionRow" data-date="2027-01-11" data-num="13" data-practice="session13-practice.html" data-slides="session13-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#77C045">13</span></td>
       <td class="dateCol">Jan 11, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
       <td class="focusCol">Life science: cells, genetics, ecosystems</td>
-      <td class="linkCol"><a href="session13-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session13-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session13-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-01-25" data-num="14">
+    <tr class="sessionRow" data-date="2027-01-25" data-num="14" data-practice="session14-practice.html" data-slides="session14-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#77C045">14</span></td>
       <td class="dateCol">Jan 25, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
       <td class="focusCol">Physical & earth science, reading data</td>
-      <td class="linkCol"><a href="session14-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session14-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session14-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-02-01" data-num="15">
+    <tr class="sessionRow" data-date="2027-02-01" data-num="15" data-practice="session15-practice.html" data-slides="session15-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#77C045">15</span></td>
       <td class="dateCol">Feb 1, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
       <td class="focusCol">Scientific reasoning & experimental design</td>
-      <td class="linkCol"><a href="session15-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session15-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session15-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-02-08" data-num="16">
+    <tr class="sessionRow" data-date="2027-02-08" data-num="16" data-practice="session16-practice.html" data-slides="session16-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#8E7CC3">16</span></td>
       <td class="dateCol">Feb 8, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
       <td class="focusCol">Official GED Ready: Science + debrief</td>
-      <td class="linkCol"><a href="session16-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session16-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session16-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-02-15" data-num="17">
+    <tr class="sessionRow" data-date="2027-02-15" data-num="17" data-practice="session17-practice.html" data-slides="session17-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#00B2EE">17</span></td>
       <td class="dateCol">Feb 15, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
       <td class="focusCol">Civics & government</td>
-      <td class="linkCol"><a href="session17-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session17-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session17-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-02-22" data-num="18">
+    <tr class="sessionRow" data-date="2027-02-22" data-num="18" data-practice="session18-practice.html" data-slides="session18-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#00B2EE">18</span></td>
       <td class="dateCol">Feb 22, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
       <td class="focusCol">U.S. history</td>
-      <td class="linkCol"><a href="session18-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session18-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session18-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-03-01" data-num="19">
+    <tr class="sessionRow" data-date="2027-03-01" data-num="19" data-practice="session19-practice.html" data-slides="session19-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#00B2EE">19</span></td>
       <td class="dateCol">Mar 1, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
       <td class="focusCol">Economics basics & primary sources</td>
-      <td class="linkCol"><a href="session19-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session19-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session19-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-03-08" data-num="20">
+    <tr class="sessionRow" data-date="2027-03-08" data-num="20" data-practice="session20-practice.html" data-slides="session20-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#00B2EE">20</span></td>
       <td class="dateCol">Mar 8, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#00B2EE22; color:#00B2EE;">Social Studies</span></td>
       <td class="focusCol">Geography & regional studies</td>
-      <td class="linkCol"><a href="session20-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session20-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session20-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-03-22" data-num="21">
+    <tr class="sessionRow" data-date="2027-03-22" data-num="21" data-practice="session21-practice.html" data-slides="session21-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#8E7CC3">21</span></td>
       <td class="dateCol">Mar 22, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
       <td class="focusCol">Official GED Ready: Social Studies + debrief</td>
-      <td class="linkCol"><a href="session21-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session21-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session21-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-03-29" data-num="22">
+    <tr class="sessionRow" data-date="2027-03-29" data-num="22" data-practice="session22-practice.html" data-slides="session22-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#F58427">22</span></td>
       <td class="dateCol">Mar 29, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#F5842722; color:#F58427;">Math</span></td>
       <td class="focusCol">Mixed timed practice & error analysis</td>
-      <td class="linkCol"><a href="session22-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session22-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session22-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-04-05" data-num="23">
+    <tr class="sessionRow" data-date="2027-04-05" data-num="23" data-practice="session23-practice.html" data-slides="session23-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#004B97">23</span></td>
       <td class="dateCol">Apr 5, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
       <td class="focusCol">Advanced grammar & rhetorical analysis</td>
-      <td class="linkCol"><a href="session23-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session23-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session23-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-04-12" data-num="24">
+    <tr class="sessionRow" data-date="2027-04-12" data-num="24" data-practice="session24-practice.html" data-slides="session24-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#004B97">24</span></td>
       <td class="dateCol">Apr 12, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#004B9722; color:#004B97;">RLA</span></td>
       <td class="focusCol">Extended response: timed full essays</td>
-      <td class="linkCol"><a href="session24-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session24-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session24-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-04-19" data-num="25">
+    <tr class="sessionRow" data-date="2027-04-19" data-num="25" data-practice="session25-practice.html" data-slides="session25-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#77C045">25</span></td>
       <td class="dateCol">Apr 19, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#77C04522; color:#77C045;">Science</span></td>
       <td class="focusCol">Mixed timed practice & error analysis</td>
-      <td class="linkCol"><a href="session25-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session25-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session25-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-04-26" data-num="26">
+    <tr class="sessionRow" data-date="2027-04-26" data-num="26" data-practice="session26-practice.html" data-slides="session26-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#8E7CC3">26</span></td>
       <td class="dateCol">Apr 26, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#8E7CC322; color:#8E7CC3;">Checkpoint</span></td>
       <td class="focusCol">Official GED Ready retest opportunity</td>
-      <td class="linkCol"><a href="session26-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session26-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session26-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-05-03" data-num="27">
+    <tr class="sessionRow" data-date="2027-05-03" data-num="27" data-practice="session27-practice.html" data-slides="session27-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#4A6FA5">27</span></td>
       <td class="dateCol">May 3, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#4A6FA522; color:#4A6FA5;">Review</span></td>
       <td class="focusCol">Cumulative review, all 4 subjects</td>
-      <td class="linkCol"><a href="session27-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session27-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session27-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-05-10" data-num="28">
+    <tr class="sessionRow" data-date="2027-05-10" data-num="28" data-practice="session28-practice.html" data-slides="session28-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#5B8C99">28</span></td>
       <td class="dateCol">May 10, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#5B8C9922; color:#5B8C99;">Test-Ready Sprint</span></td>
       <td class="focusCol">Small groups by weak subject area</td>
-      <td class="linkCol"><a href="session28-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session28-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session28-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-05-17" data-num="29">
+    <tr class="sessionRow" data-date="2027-05-17" data-num="29" data-practice="session29-practice.html" data-slides="session29-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#5B8C99">29</span></td>
       <td class="dateCol">May 17, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#5B8C9922; color:#5B8C99;">Test-Ready Sprint</span></td>
       <td class="focusCol">Test registration & OnVUE walkthrough</td>
-      <td class="linkCol"><a href="session29-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session29-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session29-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
 
-    <tr class="sessionRow" data-date="2027-05-24" data-num="30">
+    <tr class="sessionRow" data-date="2027-05-24" data-num="30" data-practice="session30-practice.html" data-slides="session30-slides.pdf">
       <td class="numCol"><span class="numBadge" style="background:#D96F1A">30</span></td>
       <td class="dateCol">May 24, 2027</td>
       <td class="phaseCol"><span class="phasePill" style="background:#D96F1A22; color:#D96F1A;">Closing</span></td>
       <td class="focusCol">Final Q&A, celebration, next steps</td>
-      <td class="linkCol"><a href="session30-practice.html" class="rowlink">Practice &rarr;</a></td>
+      <td class="linkCol">
+        <a href="session30-slides.pdf" class="rowlink slideslink" target="_blank" rel="noopener">Slides</a>
+        <a href="session30-practice.html" class="rowlink">Practice &rarr;</a>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -356,11 +452,13 @@
   const num = currentRow.dataset.num;
   const focus = currentRow.querySelector(".focusCol").textContent;
   const dateStr = currentRow.querySelector(".dateCol").textContent;
-  const practiceLink = currentRow.querySelector(".rowlink").getAttribute("href");
+  const practiceLink = currentRow.dataset.practice;
+  const slidesLink = currentRow.dataset.slides;
 
   document.getElementById("currentTitle").textContent = "Session " + num + ": " + focus;
   document.getElementById("currentMeta").textContent = dateStr;
   document.getElementById("currentBtn").href = practiceLink;
+  document.getElementById("currentSlidesBtn").href = slidesLink;
 
   // Scroll the current row into view within the table on load
   currentRow.scrollIntoView({ block: "center", behavior: "instant" });
