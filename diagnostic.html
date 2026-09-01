@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GED Prep &mdash; Session 1 Diagnostic</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76;
+    --good:#3C7A64; --bad:#C94C4C;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--cream); color:var(--ink);}
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.6rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-60px; right:-60px; width:180px; height:180px; background:var(--coral); opacity:0.35; border-radius:50%;}
+  header h1{font-family:Georgia,serif; font-size:1.9rem; margin:0 0 0.4rem; position:relative;}
+  header p{margin:0; color:var(--gold); font-size:1rem; position:relative;}
+  .wrap{max-width:760px; margin:1.6rem auto 3rem; padding:0 1.2rem;}
+  .card{background:#fff; border-radius:16px; padding:1.6rem 1.7rem; margin-bottom:1.3rem; box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+  .card h2{font-family:Georgia,serif; font-size:1.2rem; color:var(--navy); margin:0 0 0.7rem;}
+  label.field-label{display:block; font-weight:700; color:var(--navy); margin-bottom:0.4rem; font-size:0.95rem;}
+  input[type=text]{padding:0.65rem 0.85rem; border:2px solid #E7E4DA; border-radius:10px; font-size:0.95rem; width:100%; max-width:320px;}
+  input[type=text]:focus{outline:none; border-color:var(--navy);}
+  button.primary{background:var(--coral); color:#fff; border:none; padding:0.75rem 1.6rem; border-radius:999px; font-weight:700; font-size:0.98rem; cursor:pointer; margin-top:0.5rem;}
+  button.primary:hover{background:var(--coral-dark);}
+  button.secondary{background:transparent; color:var(--navy); border:2px solid var(--navy); padding:0.55rem 1.2rem; border-radius:999px; font-weight:700; font-size:0.9rem; cursor:pointer;}
+
+  .subjectHeader{display:flex; align-items:center; gap:0.6rem; margin:1.8rem 0 0.8rem;}
+  .subjectHeader:first-child{margin-top:0;}
+  .subjectHeader .dot{width:0.7rem; height:0.7rem; border-radius:50%;}
+  .subjectHeader h3{font-family:Georgia,serif; color:var(--navy); font-size:1.05rem; margin:0;}
+
+  .question{margin-bottom:1.4rem;}
+  .qtext{font-size:0.98rem; margin-bottom:0.6rem; line-height:1.5;}
+  .qtext .passage{display:block; background:var(--cream); border-radius:8px; padding:0.7rem 0.9rem; margin-bottom:0.6rem; font-style:italic; font-size:0.93rem;}
+  .optRow{display:flex; align-items:flex-start; gap:0.5rem; padding:0.5rem 0.7rem; border:2px solid #E7E4DA; border-radius:10px; margin-bottom:0.45rem; cursor:pointer; transition:border-color 0.15s;}
+  .optRow:hover{border-color:var(--coral);}
+  .optRow input{margin-top:0.2rem;}
+  .optRow.answered-correct{border-color:var(--good); background:#EAF5F0;}
+  .optRow.answered-incorrect{border-color:var(--bad); background:#FBEAEA;}
+
+  .progressBar{height:8px; background:#EDE8DA; border-radius:99px; overflow:hidden; margin-bottom:1.5rem;}
+  .progressFill{height:100%; background:var(--coral); width:0%; transition:width 0.3s;}
+
+  .resultRow{margin-bottom:1.4rem;}
+  .resultRow .top{display:flex; justify-content:space-between; margin-bottom:0.35rem; font-weight:700; color:var(--navy);}
+  .barTrack{height:14px; background:#EDE8DA; border-radius:99px; overflow:hidden;}
+  .barFill{height:100%; border-radius:99px;}
+  .bandLabel{font-size:0.85rem; margin-top:0.3rem; color:var(--muted);}
+
+  table{width:100%; border-collapse:collapse; font-size:0.88rem;}
+  th, td{text-align:left; padding:0.5rem 0.6rem; border-bottom:1px solid #EDE8DA;}
+  th{color:var(--navy); font-family:Georgia,serif;}
+
+  .hidden{display:none;}
+  .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+  .topLink{position:fixed; top:1rem; right:1.2rem; z-index:5;}
+  .topLink button{background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.4); padding:0.4rem 0.9rem; border-radius:999px; font-size:0.8rem; cursor:pointer;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Session 1 Diagnostic</h1>
+  <p>20 questions &bull; about 20&ndash;25 minutes &bull; doesn't count against you</p>
+</header>
+
+<div class="wrap">
+
+  <!-- NAME ENTRY -->
+  <div class="card" id="nameCard">
+    <h2>Let's get started</h2>
+    <label class="field-label" for="studentName">What's your first name and last initial? (e.g., "Maria G.")</label>
+    <input type="text" id="studentName" placeholder="Your name">
+    <br>
+    <button class="primary" id="startBtn">Begin Diagnostic</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card hidden" id="quizCard">
+    <div class="progressBar"><div class="progressFill" id="progressFill"></div></div>
+    <div id="quizQuestions"></div>
+    <button class="primary" id="submitBtn">Submit My Answers</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card hidden" id="resultsCard">
+    <h2 id="resultsGreeting">Nice work!</h2>
+    <p style="color:var(--muted); font-size:0.9rem; margin-top:-0.4rem;">This just tells us where to focus &mdash; it isn't a pass/fail score, and it's visible to your instructor so they can plan your first few weeks.</p>
+    <div id="resultsBody"></div>
+  </div>
+
+  <p class="footNote">Your results are saved automatically for your instructor &mdash; they are not shared with other students.</p>
+</div>
+
+<script>
+const SUBJECTS = [
+  { key: "Math", color: "#F58427" },
+  { key: "RLA", color: "#004B97" },
+  { key: "Science", color: "#77C045" },
+  { key: "Social Studies", color: "#00B2EE" },
+];
+
+const QUESTIONS = [
+  // ---- MATH ----
+  { subject: "Math", type: "mc", q: "12 + 8 \u00d7 3 = ?", opts: ["36", "60", "84", "44"], correct: 0 },
+  { subject: "Math", type: "mc", q: "Solve for x: x + 7 = 15", opts: ["8", "22", "7", "15"], correct: 0 },
+  { subject: "Math", type: "mc", q: "What is 25% of 80?", opts: ["20", "25", "15", "40"], correct: 0 },
+  { subject: "Math", type: "mc", q: "A rectangle has a length of 6 and a width of 4. What is its area?", opts: ["24", "20", "10", "48"], correct: 0 },
+  { subject: "Math", type: "fill", q: "If a car travels 60 miles in 2 hours, its average speed is ___ mph.", answer: "30" },
+
+  // ---- RLA ----
+  { subject: "RLA", type: "mc", q: "Which sentence is punctuated correctly?", opts: [
+      "I wanted to go to the store; however, I forgot my wallet.",
+      "I wanted to go to the store, however I forgot my wallet.",
+      "I wanted to go to the store however, I forgot my wallet.",
+      "I wanted to go, to the store however I forgot my wallet.",
+    ], correct: 0 },
+  { subject: "RLA", type: "mc", q: "Maria checked her watch for the third time in five minutes. The bus was already ten minutes late, and her shift started in twenty. What can you infer about Maria?",
+    opts: ["She is bored.", "She is worried about being late.", "She dislikes buses.", "She lost her watch."], correct: 1 },
+  { subject: "RLA", type: "mc", q: "\u201cThe company's profits were meager this quarter.\u201d Meager most nearly means:", opts: ["Scarce", "Huge", "Steady", "Unpredictable"], correct: 0 },
+  { subject: "RLA", type: "mc", q: "Which sentence uses the correct verb tense?", opts: [
+      "Yesterday, she walked to work.", "Yesterday, she walks to work.", "Yesterday, she walking to work.", "Yesterday, she will walk to work.",
+    ], correct: 0 },
+  { subject: "RLA", type: "fill", q: "The opposite of the word \u201cincrease\u201d is ______.", answer: "decrease" },
+
+  // ---- SCIENCE ----
+  { subject: "Science", type: "mc", q: "Which part of the cell is mainly responsible for producing energy?", opts: ["Mitochondria", "Nucleus", "Ribosome", "Cell wall"], correct: 0 },
+  { subject: "Science", type: "mc", q: "What force pulls objects toward the Earth?", opts: ["Gravity", "Friction", "Magnetism", "Inertia"], correct: 0 },
+  { subject: "Science", type: "mc", q: "A graph shows temperature rising steadily from 8am to 2pm, then falling until 8pm. At what time was the temperature highest?", opts: ["8am", "2pm", "8pm", "Noon"], correct: 1 },
+  { subject: "Science", type: "mc", q: "Which of these is a renewable energy source?", opts: ["Solar", "Coal", "Natural gas", "Oil"], correct: 0 },
+  { subject: "Science", type: "fill", q: "The process by which plants convert sunlight into energy is called ______.", answer: "photosynthesis" },
+
+  // ---- SOCIAL STUDIES ----
+  { subject: "Social Studies", type: "mc", q: "How many branches does the U.S. federal government have?", opts: ["3", "2", "4", "1"], correct: 0 },
+  { subject: "Social Studies", type: "mc", q: "Which document begins with the words \u201cWe the People\u201d?", opts: ["The U.S. Constitution", "The Declaration of Independence", "The Bill of Rights", "The Emancipation Proclamation"], correct: 0 },
+  { subject: "Social Studies", type: "mc", q: "What is it called when a government spends more money than it collects in revenue?", opts: ["A budget deficit", "A surplus", "A tariff", "Inflation"], correct: 0 },
+  { subject: "Social Studies", type: "mc", q: "Egypt is located mainly on which continent?", opts: ["Africa", "Asia", "Europe", "South America"], correct: 0 },
+  { subject: "Social Studies", type: "fill", q: "The right to vote is also known as ______.", answer: "suffrage" },
+];
+
+let studentName = "";
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  const name = document.getElementById("studentName").value.trim();
+  if (!name) { alert("Please enter your name so your instructor can find your results."); return; }
+  studentName = name;
+  document.getElementById("nameCard").classList.add("hidden");
+  document.getElementById("quizCard").classList.remove("hidden");
+  renderQuiz();
+});
+
+function renderQuiz() {
+  const container = document.getElementById("quizQuestions");
+  let html = "";
+  let lastSubject = null;
+  QUESTIONS.forEach((q, i) => {
+    if (q.subject !== lastSubject) {
+      const meta = SUBJECTS.find(s => s.key === q.subject);
+      html += `<div class="subjectHeader"><span class="dot" style="background:${meta.color}"></span><h3>${q.subject}</h3></div>`;
+      lastSubject = q.subject;
+    }
+    html += `<div class="question" data-index="${i}">`;
+    html += `<div class="qtext">${q.q}</div>`;
+    if (q.type === "mc") {
+      q.opts.forEach((opt, oi) => {
+        html += `<label class="optRow" data-qi="${i}" data-oi="${oi}">
+          <input type="radio" name="q${i}" value="${oi}"> <span>${opt}</span>
+        </label>`;
+      });
+    } else {
+      html += `<input type="text" class="fillInput" data-qi="${i}" placeholder="Type your answer">`;
+    }
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+
+  container.querySelectorAll('input[type=radio]').forEach(r => {
+    r.addEventListener("change", updateProgress);
+  });
+  container.querySelectorAll('.fillInput').forEach(f => {
+    f.addEventListener("input", updateProgress);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  let answered = 0;
+  QUESTIONS.forEach((q, i) => {
+    if (q.type === "mc") {
+      if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+    } else {
+      const val = document.querySelector(`.fillInput[data-qi="${i}"]`).value.trim();
+      if (val) answered++;
+    }
+  });
+  document.getElementById("progressFill").style.width = (answered / QUESTIONS.length * 100) + "%";
+}
+
+document.getElementById("submitBtn").addEventListener("click", async () => {
+  const scores = {};
+  SUBJECTS.forEach(s => scores[s.key] = { correct: 0, total: 0 });
+
+  QUESTIONS.forEach((q, i) => {
+    scores[q.subject].total++;
+    let isCorrect = false;
+    if (q.type === "mc") {
+      const sel = document.querySelector(`input[name="q${i}"]:checked`);
+      isCorrect = sel && parseInt(sel.value) === q.correct;
+    } else {
+      const val = document.querySelector(`.fillInput[data-qi="${i}"]`).value.trim().toLowerCase();
+      isCorrect = val === q.answer.toLowerCase();
+    }
+    if (isCorrect) scores[q.subject].correct++;
+  });
+
+  showResults(scores);
+  await saveResults(scores);
+});
+
+function bandFor(correct, total) {
+  const pct = correct / total;
+  if (pct >= 0.8) return { label: "Strong start \u2014 ready to move quickly", color: "#3C7A64" };
+  if (pct >= 0.5) return { label: "Developing \u2014 building solid ground", color: "#F9E795" };
+  return { label: "Foundational \u2014 we'll start with the basics", color: "#F96167" };
+}
+
+function showResults(scores) {
+  document.getElementById("quizCard").classList.add("hidden");
+  document.getElementById("resultsCard").classList.remove("hidden");
+  document.getElementById("resultsGreeting").textContent = `Nice work, ${studentName}!`;
+
+  let html = "";
+  SUBJECTS.forEach(s => {
+    const { correct, total } = scores[s.key];
+    const band = bandFor(correct, total);
+    const pct = Math.round((correct / total) * 100);
+    html += `<div class="resultRow">
+      <div class="top"><span>${s.key}</span><span>${correct} / ${total}</span></div>
+      <div class="barTrack"><div class="barFill" style="width:${pct}%; background:${s.color}"></div></div>
+      <div class="bandLabel">${band.label}</div>
+    </div>`;
+  });
+  document.getElementById("resultsBody").innerHTML = html;
+}
+
+async function saveResults(scores) {
+  const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSdURw8P0MhLNwdVLk-c0lUiqcY6rt9tmHGuN0_W3BdSUyTuWA/formResponse";
+  const ENTRY_IDS = {
+    name: "entry.2067206257",
+    Math: "entry.1090012638",
+    RLA: "entry.1003520836",
+    Science: "entry.1870843369",
+    "Social Studies": "entry.1059861827",
+  };
+
+  const body = new URLSearchParams();
+  body.append(ENTRY_IDS.name, studentName);
+  SUBJECTS.forEach(s => {
+    const { correct, total } = scores[s.key];
+    body.append(ENTRY_IDS[s.key], `${correct}/${total}`);
+  });
+
+  try {
+    await fetch(FORM_ACTION, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+  } catch (e) {
+    console.error("Could not submit diagnostic results", e);
+  }
+}
+</script>
+
+</body>
+</html>
