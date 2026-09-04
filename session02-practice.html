@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 2 Take-Home | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76;
+    --good:#3C7A64; --bad:#C94C4C;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--cream); color:var(--ink);}
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.6rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-60px; right:-60px; width:180px; height:180px; background:var(--coral); opacity:0.35; border-radius:50%;}
+  header h1{font-family:Georgia,serif; font-size:1.9rem; margin:0 0 0.4rem; position:relative;}
+  header p{margin:0; color:var(--gold); font-size:1rem; position:relative;}
+  .backlinks{position:relative; margin-top:0.8rem;}
+  .backlinks a{color:#EDEBF6; font-size:0.85rem; text-decoration:underline; margin:0 0.6rem;}
+  .wrap{max-width:760px; margin:1.6rem auto 3rem; padding:0 1.2rem;}
+
+  nav.tabs{display:flex; gap:0.5rem; background:#fff; border-radius:16px; padding:0.4rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:1.5rem;}
+  nav.tabs button{flex:1; border:none; background:transparent; padding:0.75rem 0.5rem; font-size:0.92rem; font-weight:600; color:var(--muted); border-radius:12px; cursor:pointer;}
+  nav.tabs button.active{background:var(--navy); color:#fff;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{background:#fff; border-radius:16px; padding:1.5rem 1.6rem; margin-bottom:1.3rem; box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+  .card h2{font-family:Georgia,serif; font-size:1.15rem; color:var(--navy); margin:0 0 0.5rem;}
+  .card p.sub{color:var(--muted); font-size:0.9rem; margin:0 0 1rem;}
+
+  .checkRow{display:flex; align-items:flex-start; gap:0.7rem; padding:0.7rem 0.5rem; border-bottom:1px solid #F1EEE4;}
+  .checkRow:last-child{border-bottom:none;}
+  .checkRow input[type=checkbox]{width:1.2rem; height:1.2rem; margin-top:0.15rem; accent-color:var(--coral);}
+  .checkRow label{font-size:0.95rem; line-height:1.4;}
+
+  textarea, select, input[type=text]{
+    width:100%; padding:0.7rem 0.85rem; border:2px solid #E7E4DA; border-radius:10px;
+    font-size:0.95rem; font-family:inherit; resize:vertical;
+  }
+  textarea:focus, select:focus, input[type=text]:focus{outline:none; border-color:var(--navy);}
+  .field{margin-bottom:1.2rem;}
+  label.field-label{display:block; font-weight:700; color:var(--navy); margin-bottom:0.4rem; font-size:0.95rem;}
+
+  button.save{background:var(--navy); color:#fff; border:none; padding:0.7rem 1.5rem; border-radius:999px; font-weight:700; font-size:0.95rem; cursor:pointer;}
+  button.save:hover{background:var(--navy-dark);}
+  .savedNote{font-size:0.85rem; color:var(--good); margin-top:0.6rem; display:none;}
+  .savedNote.show{display:block;}
+
+  .sliderRow{margin-bottom:1.5rem;}
+  .sliderRow .top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;}
+  .sliderRow .top span.val{font-weight:700; color:var(--coral);}
+  input[type=range]{width:100%; accent-color:var(--coral);}
+  .scaleLabels{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;}
+
+  .practiceQ{margin-bottom:1.2rem;}
+  .badge{display:inline-block; background:var(--gold); color:#2B2B2B; font-size:0.7rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px; margin-bottom:0.4rem;}
+  .optRow{display:block; padding:0.6rem 0.8rem; border:2px solid #E7E4DA; border-radius:10px; margin-bottom:0.45rem; cursor:pointer;}
+  .optRow:hover{border-color:var(--coral);}
+  .optRow.correct{border-color:var(--good); background:#EAF5F0;}
+  .optRow.incorrect{border-color:var(--bad); background:#FBEAEA;}
+  .feedback{margin-top:0.6rem; font-size:0.9rem; padding:0.6rem 0.8rem; border-radius:10px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:#EAF5F0; color:var(--good);}
+  .feedback.bad{background:#FBEAEA; color:var(--bad);}
+
+  .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Session 2 Take-Home</h1>
+  <p>10 minutes &bull; study skills &amp; goal check-in</p>
+  <div class="backlinks">
+    <a href="sessions.html">&larr; All Sessions</a>
+    <a href="progress.html">My Progress</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="skills">Study Skills</button>
+    <button class="tab-btn" data-tab="test">Practice the Test</button>
+    <button class="tab-btn" data-tab="confidence">Check In</button>
+  </nav>
+
+  <!-- TAB 1: Study Skills checklist + goal recap -->
+  <section class="panel active" id="panel-skills">
+    <div class="card">
+      <h2>This Week's Study Habits</h2>
+      <p class="sub">Check off what you actually did this week &mdash; no pressure, just honesty.</p>
+      <div class="checkRow"><input type="checkbox" id="chk1"><label for="chk1">I wrote down my goal in the Goals tab</label></div>
+      <div class="checkRow"><input type="checkbox" id="chk2"><label for="chk2">I took notes by hand at least once this week</label></div>
+      <div class="checkRow"><input type="checkbox" id="chk3"><label for="chk3">I studied in more than one short session (instead of one long one)</label></div>
+      <div class="checkRow"><input type="checkbox" id="chk4"><label for="chk4">I know what I'll ask about at Thursday office hours (or that I don't need to)</label></div>
+      <button class="save" id="saveChecklist">Save My Checklist</button>
+      <div class="savedNote" id="checklistSaved">Saved! See you Thursday if you need us.</div>
+    </div>
+
+    <div class="card">
+      <h2>Revisit Your Goal</h2>
+      <p class="sub">Quick gut check &mdash; does this still feel true?</p>
+      <div id="newHereNote" style="background:#FFF3D6; border-radius:10px; padding:0.8rem 1rem; margin-bottom:1rem; font-size:0.9rem; display:none;">
+        <strong>New here or skipped Session 1?</strong> Set your goal for the first time on the
+        <a href="session01-practice.html" style="color:var(--navy); font-weight:700;">Session 1 take-home page</a> &mdash; look for the "Set Your Goals" tab. Come back here anytime after that to check in on it.
+      </div>
+      <div class="field">
+        <label class="field-label" for="goalWhy2">What's motivating you to get your GED? (edit anytime)</label>
+        <textarea id="goalWhy2" rows="2" placeholder="e.g., I want to qualify for a better job..."></textarea>
+      </div>
+      <button class="save" id="saveGoal2">Update My Goal</button>
+      <div class="savedNote" id="goalSaved2">Updated!</div>
+    </div>
+  </section>
+
+  <!-- TAB 2: Practice the computer test format -->
+  <section class="panel" id="panel-test">
+    <div class="card">
+      <h2>Try a Few More Test-Style Questions</h2>
+      <p class="sub">Same formats as Session 1 &mdash; just building comfort with the screen, not new content yet.</p>
+
+      <div class="practiceQ" id="q1">
+        <span class="badge">MULTIPLE CHOICE</span>
+        <p><strong>Click the option that flags a question to revisit later:</strong></p>
+        <div class="optRow" data-correct="true">A small flag or bookmark icon near the question number</div>
+        <div class="optRow" data-correct="false">The Submit button</div>
+        <div class="optRow" data-correct="false">The timer in the corner</div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="practiceQ" id="q2">
+        <span class="badge">MULTIPLE CHOICE</span>
+        <p><strong>On test day, if you're not sure of an answer, you should:</strong></p>
+        <div class="optRow" data-correct="false">Leave it blank and move on for good</div>
+        <div class="optRow" data-correct="true">Make your best guess, flag it, and come back if you have time</div>
+        <div class="optRow" data-correct="false">Stop the test and start over</div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="practiceQ">
+        <span class="badge">FILL IN THE BLANK</span>
+        <p><strong>The button you click when you're completely done with the test is called the ______ button.</strong></p>
+        <input type="text" id="blankInput2" placeholder="Type your answer" style="max-width:220px;">
+        <button class="save" id="blankCheck2" style="margin-left:0.6rem; padding:0.55rem 1.1rem; font-size:0.85rem;">Check</button>
+        <div class="feedback" id="blankFeedback2"></div>
+      </div>
+
+      <div class="practiceQ">
+        <span class="badge">DROP-DOWN</span>
+        <p><strong>If you're stuck on a question and running low on time, the best move is to</strong>
+          <select id="dropdownSelect2" style="padding:0.5rem 0.7rem; border:2px solid #E7E4DA; border-radius:10px; font-size:0.95rem;">
+            <option value="">choose one</option>
+            <option value="correct">make your best guess, flag it, and keep moving</option>
+            <option value="wrong1">skip it and leave it blank forever</option>
+            <option value="wrong2">stop the test until you figure it out</option>
+          </select>.
+        </p>
+        <button class="save" id="dropdownCheck2" style="padding:0.55rem 1.1rem; font-size:0.85rem;">Check My Answer</button>
+        <div class="feedback" id="dropdownFeedback2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: Confidence check-in -->
+  <section class="panel" id="panel-confidence">
+    <div class="card">
+      <h2>How Confident Do You Feel Right Now?</h2>
+      <p class="sub">Be honest &mdash; this is just for you to track how you're feeling week to week. No wrong answers.</p>
+
+      <div class="sliderRow" data-subject="Math">
+        <div class="top"><span>Math</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="RLA">
+        <div class="top"><span>Reading &amp; Writing (RLA)</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Science">
+        <div class="top"><span>Science</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Social Studies">
+        <div class="top"><span>Social Studies</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+
+      <button class="save" id="saveConfidence">Save My Check-In</button>
+      <div class="savedNote" id="confidenceSaved">Saved! Check My Progress to see your trend.</div>
+    </div>
+  </section>
+
+  <p class="footNote">Want more practice on your own? GED.com offers free, untimed <a href="https://tools.ged.com/en/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">test preview tutorials</a> for every subject (also available <a href="https://tools.ged.com/es/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">en Espa&ntilde;ol</a>).</p>
+  <p class="footNote">Your answers are saved on this device only. If you switch computers, they won't carry over. Questions? Bring them to Thursday office hours.</p>
+</div>
+
+<script>
+// ---------- Tabs ----------
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ---------- Practice questions ----------
+document.querySelectorAll(".practiceQ").forEach(q => {
+  q.querySelectorAll(".optRow").forEach(opt => {
+    opt.addEventListener("click", () => {
+      const correct = opt.dataset.correct === "true";
+      q.querySelectorAll(".optRow").forEach(o => o.style.pointerEvents = "none");
+      opt.classList.add(correct ? "correct" : "incorrect");
+      if (!correct) {
+        q.querySelectorAll(".optRow").forEach(o => { if (o.dataset.correct === "true") o.classList.add("correct"); });
+      }
+      const fb = q.querySelector(".feedback");
+      fb.classList.add("show", correct ? "good" : "bad");
+      fb.textContent = correct ? "Correct!" : "Not quite \u2014 the correct answer is highlighted above.";
+    });
+  });
+});
+
+// ---------- Fill in blank ----------
+document.getElementById("blankCheck2").addEventListener("click", () => {
+  const val = document.getElementById("blankInput2").value.trim().toLowerCase();
+  const correct = val === "submit";
+  const fb = document.getElementById("blankFeedback2");
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct ? "Correct! The Submit button ends the test." : "Not quite \u2014 the answer is \u201cSubmit.\u201d";
+});
+
+// ---------- Drop-down ----------
+document.getElementById("dropdownCheck2").addEventListener("click", () => {
+  const val = document.getElementById("dropdownSelect2").value;
+  const fb = document.getElementById("dropdownFeedback2");
+  if (!val) { fb.classList.add("show", "bad"); fb.textContent = "Pick an option from the menu first."; return; }
+  const correct = val === "correct";
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct
+    ? "Correct! Guess, flag, and move on \u2014 you can always come back if there's time."
+    : "Not quite \u2014 the best move is to guess, flag it, and keep moving so you don't run out of time on other questions.";
+});
+
+// ---------- Confidence sliders ----------
+document.querySelectorAll(".sliderRow input[type=range]").forEach(input => {
+  input.addEventListener("input", () => {
+    input.closest(".sliderRow").querySelector(".val").textContent = input.value;
+  });
+});
+
+// ---------- Load saved state ----------
+function loadChecklist() {
+  try {
+    const raw = localStorage.getItem("checklist-week-02");
+    if (raw) {
+      const data = JSON.parse(raw);
+      Object.keys(data).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.checked = data[id];
+      });
+    }
+  } catch (e) {}
+}
+function loadGoal() {
+  try {
+    const raw = localStorage.getItem("session1-goals");
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.getElementById("goalWhy2").value = data.why || "";
+      if (!data.why) document.getElementById("newHereNote").style.display = "block";
+    } else {
+      document.getElementById("newHereNote").style.display = "block";
+    }
+  } catch (e) {
+    document.getElementById("newHereNote").style.display = "block";
+  }
+}
+function loadConfidence() {
+  try {
+    const raw = localStorage.getItem("confidence-week-02");
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.querySelectorAll(".sliderRow").forEach(row => {
+        const subject = row.dataset.subject;
+        if (data[subject] !== undefined) {
+          const input = row.querySelector("input[type=range]");
+          input.value = data[subject];
+          row.querySelector(".val").textContent = data[subject];
+        }
+      });
+    }
+  } catch (e) {}
+}
+
+// ---------- Save handlers ----------
+document.getElementById("saveChecklist").addEventListener("click", () => {
+  const data = { chk1: document.getElementById("chk1").checked, chk2: document.getElementById("chk2").checked,
+                 chk3: document.getElementById("chk3").checked, chk4: document.getElementById("chk4").checked };
+  localStorage.setItem("checklist-week-02", JSON.stringify(data));
+  localStorage.setItem("completed-week-02", new Date().toISOString());
+  const note = document.getElementById("checklistSaved");
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 3000);
+});
+
+document.getElementById("saveGoal2").addEventListener("click", () => {
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem("session1-goals")) || {}; } catch (e) {}
+  data.why = document.getElementById("goalWhy2").value;
+  localStorage.setItem("session1-goals", JSON.stringify(data));
+  const note = document.getElementById("goalSaved2");
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 3000);
+});
+
+document.getElementById("saveConfidence").addEventListener("click", () => {
+  const data = {};
+  document.querySelectorAll(".sliderRow").forEach(row => {
+    data[row.dataset.subject] = row.querySelector("input[type=range]").value;
+  });
+  localStorage.setItem("confidence-week-02", JSON.stringify(data));
+  localStorage.setItem("completed-week-02", new Date().toISOString());
+  const note = document.getElementById("confidenceSaved");
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 3000);
+});
+
+loadChecklist();
+loadGoal();
+loadConfidence();
+</script>
+
+</body>
+</html>

@@ -259,16 +259,18 @@
     </div>
 
     <div class="card">
-      <span class="badge">DRAG &amp; DROP</span>
-      <h2>Put these steps in the right order</h2>
-      <p class="prompt">Drag to arrange the steps for solving <strong>3x + 5 = 20</strong>:</p>
-      <ul class="dragList" id="dragList">
-        <li class="dragItem" draggable="true" data-order="2"><span class="num">?</span>Divide both sides by 3</li>
-        <li class="dragItem" draggable="true" data-order="1"><span class="num">?</span>Subtract 5 from both sides</li>
-        <li class="dragItem" draggable="true" data-order="3"><span class="num">?</span>Solve: x = 5</li>
-      </ul>
-      <button class="check" id="dragCheck">Check My Order</button>
-      <div class="feedback" id="dragFeedback"></div>
+      <span class="badge">DROP-DOWN</span>
+      <h2>Choose from a drop-down menu</h2>
+      <p class="prompt">To solve <strong>3x + 5 = 20</strong>, first subtract 5 from both sides. The next step is to
+        <select id="dropdownSelect" style="padding:0.5rem 0.7rem; border:2px solid #E7E4DA; border-radius:10px; font-size:0.95rem;">
+          <option value="">choose one</option>
+          <option value="correct">divide both sides by 3</option>
+          <option value="wrong1">add 3 to both sides</option>
+          <option value="wrong2">multiply both sides by 5</option>
+        </select>.
+      </p>
+      <button class="check" id="dropdownCheck">Check My Answer</button>
+      <div class="feedback" id="dropdownFeedback"></div>
     </div>
 
     <div class="card">
@@ -281,7 +283,7 @@
     </div>
 
     <div class="card">
-      <span class="badge">HIGHLIGHT IN TEXT</span>
+      <span class="badge">SELECT-AN-AREA</span>
       <h2>Click the sentence that answers the question</h2>
       <p class="prompt">Which sentence tells you <em>why</em> the library added GED classes?</p>
       <p class="passage" id="passage">
@@ -353,6 +355,7 @@
     </div>
   </section>
 
+  <p class="footNote">Want more practice on your own? GED.com offers free, untimed <a href="https://tools.ged.com/en/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">test preview tutorials</a> for every subject (also available <a href="https://tools.ged.com/es/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">en Espa&ntilde;ol</a>).</p>
   <p class="footNote">Your answers are saved on this device only (not shared with your instructor or other students). If you switch computers, they won't carry over. Questions? Bring them to Thursday office hours.</p>
 </div>
 
@@ -386,30 +389,16 @@ document.querySelectorAll("#mcOptions .opt").forEach(btn => {
   });
 });
 
-// ---------- Drag and drop ----------
-const dragList = document.getElementById("dragList");
-let dragEl = null;
-dragList.querySelectorAll(".dragItem").forEach(item => {
-  item.addEventListener("dragstart", () => { dragEl = item; item.classList.add("dragging"); });
-  item.addEventListener("dragend", () => item.classList.remove("dragging"));
-});
-dragList.addEventListener("dragover", e => {
-  e.preventDefault();
-  const after = [...dragList.querySelectorAll(".dragItem:not(.dragging)")].find(el => {
-    const box = el.getBoundingClientRect();
-    return e.clientY < box.top + box.height / 2;
-  });
-  if (after) dragList.insertBefore(dragEl, after);
-  else dragList.appendChild(dragEl);
-});
-document.getElementById("dragCheck").addEventListener("click", () => {
-  const order = [...dragList.querySelectorAll(".dragItem")].map(el => el.dataset.order);
-  const correct = order.join(",") === "1,2,3";
-  const fb = document.getElementById("dragFeedback");
+// ---------- Drop-down ----------
+document.getElementById("dropdownCheck").addEventListener("click", () => {
+  const val = document.getElementById("dropdownSelect").value;
+  const fb = document.getElementById("dropdownFeedback");
+  if (!val) { fb.classList.add("show", "bad"); fb.textContent = "Pick an option from the menu first."; return; }
+  const correct = val === "correct";
   fb.classList.add("show", correct ? "good" : "bad");
   fb.textContent = correct
-    ? "Correct order! Subtract, divide, solve."
-    : "Not quite yet \u2014 remember: undo addition/subtraction first, then division. Try rearranging.";
+    ? "Correct! After subtracting 5, dividing both sides by 3 isolates x."
+    : "Not quite \u2014 after subtracting 5, the next step is to divide both sides by 3.";
 });
 
 // ---------- Fill in blank ----------
