@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session 2 Take-Home | Next Chapter @ Smith Public Library</title>
+<title>Session 3 Take-Home | Next Chapter @ Smith Public Library</title>
 <style>
   :root{
     --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
@@ -48,6 +48,12 @@
   button.check{background:var(--coral); color:#fff; border:none; padding:0.6rem 1.3rem; border-radius:999px; font-weight:700; font-size:0.9rem; cursor:pointer; margin-top:0.6rem;}
   button.check:hover{background:var(--coral-dark);}
 
+  .passage{font-size:1rem; line-height:1.9;}
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
+
   .sliderRow{margin-bottom:1.5rem;}
   .sliderRow .top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;}
   .sliderRow .top span.val{font-weight:700; color:var(--coral);}
@@ -64,8 +70,8 @@
 <body>
 
 <header>
-  <h1>Session 2 Take-Home</h1>
-  <p>10 minutes &bull; order of operations &amp; conversions</p>
+  <h1>Session 3 Take-Home</h1>
+  <p>10 minutes &bull; ratios &amp; percentage applications</p>
   <div class="backlinks">
     <a href="sessions.html">&larr; All Sessions</a>
     <a href="progress.html">My Progress</a>
@@ -81,49 +87,48 @@
   <section class="panel active" id="panel-practice">
 
     <div class="card">
-      <span class="badge">MULTIPLE CHOICE</span>
-      <h2>Order of Operations</h2>
-      <p class="prompt">What is <strong>10 + 6 &divide; 2</strong>?</p>
-      <div class="options" id="mc1Options">
-        <button class="opt" data-correct="false">8</button>
-        <button class="opt" data-correct="true">13</button>
-        <button class="opt" data-correct="false">18</button>
-        <button class="opt" data-correct="false">16</button>
-      </div>
-      <div class="feedback" id="mc1Feedback"></div>
-    </div>
-
-    <div class="card">
-      <span class="badge">MULTIPLE CHOICE</span>
-      <h2>Order of Operations</h2>
-      <p class="prompt">What is <strong>(4 + 1) &times; 6</strong>?</p>
-      <div class="options" id="mc2Options">
-        <button class="opt" data-correct="false">10</button>
-        <button class="opt" data-correct="false">25</button>
-        <button class="opt" data-correct="true">30</button>
-        <button class="opt" data-correct="false">11</button>
-      </div>
-      <div class="feedback" id="mc2Feedback"></div>
+      <span class="badge">SELECT-AN-AREA</span>
+      <h2>Ratios in Context</h2>
+      <p class="prompt">Click the phrase below that describes a <strong>ratio</strong>:</p>
+      <p class="passage" id="passage1">
+        <span class="seg" data-correct="false">The recipe takes 45 minutes to bake.</span>
+        <span class="seg" data-correct="true">The recipe uses 2 cups of flour for every 1 cup of sugar.</span>
+        <span class="seg" data-correct="false">The recipe makes 12 cookies.</span>
+      </p>
+      <div class="feedback" id="passageFeedback1"></div>
     </div>
 
     <div class="card">
       <span class="badge">FILL IN THE BLANK</span>
-      <h2>Fraction to Decimal</h2>
-      <p class="prompt">Write <strong>3/4</strong> as a decimal: ______</p>
-      <input type="text" id="blankInput1" placeholder="Type your answer">
+      <h2>Solving a Ratio</h2>
+      <p class="prompt">A recipe uses 3 cups flour to 2 cups sugar. How many cups of sugar are needed for 9 cups of flour? ______</p>
+      <input type="text" id="blankInput1" placeholder="Type a number">
       <button class="check" id="blankCheck1">Check My Answer</button>
       <div class="feedback" id="blankFeedback1"></div>
     </div>
 
     <div class="card">
+      <span class="badge">MULTIPLE CHOICE</span>
+      <h2>Applying a Discount</h2>
+      <p class="prompt">A jacket costs $60 and is on sale for 20% off. What is the sale price?</p>
+      <div class="options" id="mc1Options">
+        <button class="opt" data-correct="false">$40</button>
+        <button class="opt" data-correct="true">$48</button>
+        <button class="opt" data-correct="false">$12</button>
+        <button class="opt" data-correct="false">$52</button>
+      </div>
+      <div class="feedback" id="mc1Feedback"></div>
+    </div>
+
+    <div class="card">
       <span class="badge">DROP-DOWN</span>
-      <h2>Decimal to Percentage</h2>
-      <p class="prompt">0.45 written as a percentage is
+      <h2>Calculating a Tip</h2>
+      <p class="prompt">Your bill is $50. An 18% tip is
         <select id="dropdown1">
           <option value="">choose one</option>
-          <option value="correct">45%</option>
-          <option value="wrong1">4.5%</option>
-          <option value="wrong2">450%</option>
+          <option value="correct">$9.00</option>
+          <option value="wrong1">$0.90</option>
+          <option value="wrong2">$18.00</option>
         </select>.
       </p>
       <button class="check" id="dropdownCheck1">Check My Answer</button>
@@ -131,12 +136,16 @@
     </div>
 
     <div class="card">
-      <span class="badge">FILL IN THE BLANK</span>
-      <h2>Percentage to Decimal</h2>
-      <p class="prompt">Write <strong>60%</strong> as a decimal: ______</p>
-      <input type="text" id="blankInput2" placeholder="Type your answer">
-      <button class="check" id="blankCheck2">Check My Answer</button>
-      <div class="feedback" id="blankFeedback2"></div>
+      <span class="badge">MULTIPLE CHOICE</span>
+      <h2>Rate Problems</h2>
+      <p class="prompt">You earn $36 for 4 hours of work. At that rate, how much do you earn for 7 hours?</p>
+      <div class="options" id="mc2Options">
+        <button class="opt" data-correct="false">$54</button>
+        <button class="opt" data-correct="true">$63</button>
+        <button class="opt" data-correct="false">$45</button>
+        <button class="opt" data-correct="false">$72</button>
+      </div>
+      <div class="feedback" id="mc2Feedback"></div>
     </div>
   </section>
 
@@ -185,6 +194,30 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
   });
 });
 
+document.querySelectorAll("#passage1 .seg").forEach(seg => {
+  seg.addEventListener("click", () => {
+    const correct = seg.dataset.correct === "true";
+    document.querySelectorAll("#passage1 .seg").forEach(s => s.style.pointerEvents = "none");
+    seg.classList.add(correct ? "correct" : "incorrect");
+    if (!correct) {
+      document.querySelectorAll("#passage1 .seg").forEach(s => { if (s.dataset.correct === "true") s.classList.add("correct"); });
+    }
+    const fb = document.getElementById("passageFeedback1");
+    fb.classList.add("show", correct ? "good" : "bad");
+    fb.textContent = correct
+      ? "Right \u2014 \u201c2 cups to 1 cup\u201d compares two quantities, which is exactly what a ratio does."
+      : "The highlighted sentence is the ratio \u2014 it compares two quantities. The others are just facts about time or amount.";
+  });
+});
+
+document.getElementById("blankCheck1").addEventListener("click", () => {
+  const val = document.getElementById("blankInput1").value.trim();
+  const correct = val === "6";
+  const fb = document.getElementById("blankFeedback1");
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct ? "Correct! 3:2 scaled by 3 gives 9 cups flour to 6 cups sugar." : "Not quite \u2014 3:2 scaled by 3 (since 3\u00d73=9) means sugar is 2\u00d73 = 6 cups.";
+});
+
 function wireMC(containerId, feedbackId, correctText, wrongText) {
   document.querySelectorAll("#" + containerId + " .opt").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -200,16 +233,8 @@ function wireMC(containerId, feedbackId, correctText, wrongText) {
     });
   });
 }
-wireMC("mc1Options", "mc1Feedback", "Correct! Divide first (6 \u00f7 2 = 3), then add (10 + 3 = 13).", "Not quite \u2014 divide first: 6 \u00f7 2 = 3, then 10 + 3 = 13.");
-wireMC("mc2Options", "mc2Feedback", "Correct! Parentheses first (4 + 1 = 5), then multiply (5 \u00d7 6 = 30).", "Not quite \u2014 do the parentheses first: 4 + 1 = 5, then 5 \u00d7 6 = 30.");
-
-document.getElementById("blankCheck1").addEventListener("click", () => {
-  const val = document.getElementById("blankInput1").value.trim().replace(/^0+(?=\d)/, "");
-  const correct = val === "0.75" || val === ".75";
-  const fb = document.getElementById("blankFeedback1");
-  fb.classList.add("show", correct ? "good" : "bad");
-  fb.textContent = correct ? "Correct! 3 \u00f7 4 = 0.75." : "Not quite \u2014 divide 3 by 4 to get 0.75.";
-});
+wireMC("mc1Options", "mc1Feedback", "Correct! 20% of $60 is $12, so $60 \u2212 $12 = $48.", "Not quite \u2014 20% of $60 is $12. Subtract that from $60 to get $48.");
+wireMC("mc2Options", "mc2Feedback", "Correct! $36 \u00f7 4 = $9/hour \u2192 7 hours = $63.", "Not quite \u2014 find the hourly rate first: $36 \u00f7 4 = $9/hour, then \u00d7 7 = $63.");
 
 document.getElementById("dropdownCheck1").addEventListener("click", () => {
   const val = document.getElementById("dropdown1").value;
@@ -217,15 +242,7 @@ document.getElementById("dropdownCheck1").addEventListener("click", () => {
   if (!val) { fb.classList.add("show", "bad"); fb.textContent = "Pick an option from the menu first."; return; }
   const correct = val === "correct";
   fb.classList.add("show", correct ? "good" : "bad");
-  fb.textContent = correct ? "Correct! Move the decimal two places right: 0.45 \u2192 45%." : "Not quite \u2014 move the decimal point two places right: 0.45 \u2192 45%.";
-});
-
-document.getElementById("blankCheck2").addEventListener("click", () => {
-  const val = document.getElementById("blankInput2").value.trim().replace(/^0+(?=\d)/, "");
-  const correct = val === "0.6" || val === ".6" || val === "0.60" || val === ".60";
-  const fb = document.getElementById("blankFeedback2");
-  fb.classList.add("show", correct ? "good" : "bad");
-  fb.textContent = correct ? "Correct! Move the decimal two places left: 60% \u2192 0.6." : "Not quite \u2014 move the decimal point two places left: 60% \u2192 0.6.";
+  fb.textContent = correct ? "Correct! 0.18 \u00d7 50 = $9.00." : "Not quite \u2014 18% means 0.18, and 0.18 \u00d7 50 = $9.00.";
 });
 
 document.querySelectorAll(".sliderRow input[type=range]").forEach(input => {
@@ -235,7 +252,7 @@ document.querySelectorAll(".sliderRow input[type=range]").forEach(input => {
 });
 function loadConfidence() {
   try {
-    const raw = localStorage.getItem("confidence-week-02");
+    const raw = localStorage.getItem("confidence-week-03");
     if (raw) {
       const data = JSON.parse(raw);
       document.querySelectorAll(".sliderRow").forEach(row => {
@@ -254,8 +271,8 @@ document.getElementById("saveConfidence").addEventListener("click", () => {
   document.querySelectorAll(".sliderRow").forEach(row => {
     data[row.dataset.subject] = row.querySelector("input[type=range]").value;
   });
-  localStorage.setItem("confidence-week-02", JSON.stringify(data));
-  localStorage.setItem("completed-week-02", new Date().toISOString());
+  localStorage.setItem("confidence-week-03", JSON.stringify(data));
+  localStorage.setItem("completed-week-03", new Date().toISOString());
   const note = document.getElementById("confidenceSaved");
   note.classList.add("show");
   setTimeout(() => note.classList.remove("show"), 3000);
