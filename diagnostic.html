@@ -65,6 +65,7 @@
   <h1>Session 1 Diagnostic</h1>
   <p>20 questions &bull; about 20&ndash;25 minutes &bull; doesn't count against you</p>
   <a href="sessions.html" style="display:inline-block; margin-top:0.8rem; color:#EDEBF6; font-size:0.85rem; text-decoration:underline; position:relative;">&larr; All Sessions</a>
+  <a href="progress.html" style="display:inline-block; margin-top:0.8rem; margin-left:1.2rem; color:#EDEBF6; font-size:0.85rem; text-decoration:underline; position:relative;">My Progress</a>
 </header>
 
 <div class="wrap">
@@ -105,39 +106,39 @@ const SUBJECTS = [
 
 const QUESTIONS = [
   // ---- MATH ----
-  { subject: "Math", type: "mc", q: "12 + 8 \u00d7 3 = ?", opts: ["36", "60", "84", "44"], correct: 0 },
-  { subject: "Math", type: "mc", q: "Solve for x: x + 7 = 15", opts: ["8", "22", "7", "15"], correct: 0 },
-  { subject: "Math", type: "mc", q: "What is 25% of 80?", opts: ["20", "25", "15", "40"], correct: 0 },
+  { subject: "Math", type: "mc", q: "12 + 8 \u00d7 3 = ?", opts: ["60", "84", "36", "44"], correct: 2 },
+  { subject: "Math", type: "mc", q: "Solve for x: x + 7 = 15", opts: ["22", "7", "15", "8"], correct: 3 },
+  { subject: "Math", type: "mc", q: "What is 25% of 80?", opts: ["25", "20", "15", "40"], correct: 1 },
   { subject: "Math", type: "mc", q: "A rectangle has a length of 6 and a width of 4. What is its area?", opts: ["24", "20", "10", "48"], correct: 0 },
   { subject: "Math", type: "fill", q: "If a car travels 60 miles in 2 hours, its average speed is ___ mph.", answer: "30" },
 
   // ---- RLA ----
   { subject: "RLA", type: "mc", q: "Which sentence is punctuated correctly?", opts: [
-      "I wanted to go to the store; however, I forgot my wallet.",
       "I wanted to go to the store, however I forgot my wallet.",
       "I wanted to go to the store however, I forgot my wallet.",
       "I wanted to go, to the store however I forgot my wallet.",
-    ], correct: 0 },
+      "I wanted to go to the store; however, I forgot my wallet.",
+    ], correct: 3 },
   { subject: "RLA", type: "mc", q: "Maria checked her watch for the third time in five minutes. The bus was already ten minutes late, and her shift started in twenty. What can you infer about Maria?",
     opts: ["She is bored.", "She is worried about being late.", "She dislikes buses.", "She lost her watch."], correct: 1 },
   { subject: "RLA", type: "mc", q: "\u201cThe company's profits were meager this quarter.\u201d Meager most nearly means:", opts: ["Scarce", "Huge", "Steady", "Unpredictable"], correct: 0 },
   { subject: "RLA", type: "mc", q: "Which sentence uses the correct verb tense?", opts: [
-      "Yesterday, she walked to work.", "Yesterday, she walks to work.", "Yesterday, she walking to work.", "Yesterday, she will walk to work.",
-    ], correct: 0 },
+      "Yesterday, she walks to work.", "Yesterday, she walking to work.", "Yesterday, she walked to work.", "Yesterday, she will walk to work.",
+    ], correct: 2 },
   { subject: "RLA", type: "fill", q: "The opposite of the word \u201cincrease\u201d is ______.", answer: "decrease" },
 
   // ---- SCIENCE ----
   { subject: "Science", type: "mc", q: "Which part of the cell is mainly responsible for producing energy?", opts: ["Mitochondria", "Nucleus", "Ribosome", "Cell wall"], correct: 0 },
-  { subject: "Science", type: "mc", q: "What force pulls objects toward the Earth?", opts: ["Gravity", "Friction", "Magnetism", "Inertia"], correct: 0 },
+  { subject: "Science", type: "mc", q: "What force pulls objects toward the Earth?", opts: ["Friction", "Magnetism", "Inertia", "Gravity"], correct: 3 },
   { subject: "Science", type: "mc", q: "A graph shows temperature rising steadily from 8am to 2pm, then falling until 8pm. At what time was the temperature highest?", opts: ["8am", "2pm", "8pm", "Noon"], correct: 1 },
-  { subject: "Science", type: "mc", q: "Which of these is a renewable energy source?", opts: ["Solar", "Coal", "Natural gas", "Oil"], correct: 0 },
+  { subject: "Science", type: "mc", q: "Which of these is a renewable energy source?", opts: ["Coal", "Natural gas", "Solar", "Oil"], correct: 2 },
   { subject: "Science", type: "fill", q: "The process by which plants convert sunlight into energy is called ______.", answer: "photosynthesis" },
 
   // ---- SOCIAL STUDIES ----
   { subject: "Social Studies", type: "mc", q: "How many branches does the U.S. federal government have?", opts: ["3", "2", "4", "1"], correct: 0 },
-  { subject: "Social Studies", type: "mc", q: "Which document begins with the words \u201cWe the People\u201d?", opts: ["The U.S. Constitution", "The Declaration of Independence", "The Bill of Rights", "The Emancipation Proclamation"], correct: 0 },
-  { subject: "Social Studies", type: "mc", q: "What is it called when a government spends more money than it collects in revenue?", opts: ["A budget deficit", "A surplus", "A tariff", "Inflation"], correct: 0 },
-  { subject: "Social Studies", type: "mc", q: "Egypt is located mainly on which continent?", opts: ["Africa", "Asia", "Europe", "South America"], correct: 0 },
+  { subject: "Social Studies", type: "mc", q: "Which document begins with the words \u201cWe the People\u201d?", opts: ["The Declaration of Independence", "The Bill of Rights", "The Emancipation Proclamation", "The U.S. Constitution"], correct: 3 },
+  { subject: "Social Studies", type: "mc", q: "What is it called when a government spends more money than it collects in revenue?", opts: ["A surplus", "A budget deficit", "A tariff", "Inflation"], correct: 1 },
+  { subject: "Social Studies", type: "mc", q: "Egypt is located mainly on which continent?", opts: ["Asia", "Europe", "Africa", "South America"], correct: 2 },
   { subject: "Social Studies", type: "fill", q: "The right to vote is also known as ______.", answer: "suffrage" },
 ];
 
