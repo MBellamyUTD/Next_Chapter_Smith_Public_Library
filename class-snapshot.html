@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Snapshot | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76; --good:#3C7A64;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:#fff;}
+  h1,h2{font-family:Georgia,"Times New Roman",serif; color:var(--navy);}
+  a{color:inherit; text-decoration:none;}
+  .container{max-width:900px; margin:0 auto; padding:0 1.5rem 3rem;}
+
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.4rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-70px; right:-60px; width:200px; height:200px; background:var(--coral); opacity:0.3; border-radius:50%;}
+  header h1{color:#fff; font-size:1.9rem; position:relative;}
+  header p{color:var(--gold); margin-top:0.3rem; position:relative;}
+  .backlinks{margin-top:1rem; position:relative;}
+  .backlinks a{display:inline-block; color:#EDEBF6; font-size:0.85rem; text-decoration:underline; margin:0 0.6rem;}
+
+  .card{background:#fff; border:1px solid #EDE8DA; border-radius:16px; padding:1.8rem; margin:2rem 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .card h2{font-size:1.3rem; margin-bottom:0.4rem;}
+  .card .sub{color:var(--muted); font-size:0.9rem; margin-bottom:1.2rem;}
+
+  .subjectBlock{margin-bottom:2.2rem; padding-bottom:1.8rem; border-bottom:1px solid #F1EEE4;}
+  .subjectBlock:last-child{border-bottom:none;}
+  .subjectHead{display:flex; align-items:center; justify-content:space-between; margin-bottom:0.9rem;}
+  .subjectHead h3{font-size:1.1rem; color:var(--navy);}
+  .statusPill{font-size:0.72rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:999px; text-transform:uppercase; letter-spacing:0.03em;}
+  .statusPill.before-only{background:#F1EEE4; color:var(--muted);}
+  .statusPill.complete{background:#EAF5F0; color:var(--good);}
+
+  .compareRow{display:grid; grid-template-columns:90px 1fr; gap:0.8rem; align-items:center; margin-bottom:0.6rem;}
+  .compareLabel{font-size:0.8rem; color:var(--muted); text-align:right;}
+  .barTrack{background:#F1EEE4; border-radius:99px; height:24px; overflow:hidden; display:flex;}
+  .barSeg{height:100%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.75rem; font-weight:700; transition:width 0.6s ease;}
+
+  .legend{display:flex; gap:1.2rem; margin-top:0.8rem; font-size:0.78rem; color:var(--muted); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:0.35rem;}
+  .legend .dot{width:0.7rem; height:0.7rem; border-radius:50%; display:inline-block;}
+
+  .emptyState{color:var(--muted); font-size:0.92rem; padding:2rem 0; text-align:center;}
+  .noteBox{background:var(--cream); border-radius:12px; padding:1rem 1.2rem; font-size:0.85rem; color:var(--muted); margin-top:1.5rem;}
+  .errorBox{background:#FBEAEA; color:#C94C4C; border-radius:12px; padding:1rem 1.2rem; font-size:0.9rem; margin-top:1rem;}
+
+  footer{background:var(--navy-dark); color:#C9CBE0; padding:2rem 0; text-align:center; font-size:0.85rem; margin-top:2rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Class Snapshot</h1>
+  <p>Next Chapter @ Smith Public Library</p>
+  <div class="backlinks">
+    <a href="index.html">&larr; Home</a>
+    <a href="sessions.html">All Sessions</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>How the Class Is Doing</h2>
+    <p class="sub">Diagnostic (September) compared to each subject's official checkpoint, filled in as the year goes. Group-level only &mdash; no individual names or scores.</p>
+    <div id="chartArea">
+      <p class="emptyState">Loading class results&hellip;</p>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:#F1EEE4; border:1px solid #ccc;"></span>Foundational</span>
+      <span><span class="dot" style="background:#FCB41A;"></span>Developing</span>
+      <span><span class="dot" style="background:#3C7A64;"></span>Strong / Passed Checkpoint</span>
+    </div>
+  </div>
+
+  <div class="noteBox">
+    This page shows only group-level counts &mdash; never individual names or scores. Each subject's "after" bar appears once that subject's official checkpoint has happened; until then, you'll only see where the class started.
+  </div>
+</div>
+
+<footer>&copy; 2026 Next Chapter @ Smith Public Library &bull; A GED Prep Program</footer>
+
+<script>
+  // ============================================================
+  // IMPORTANT: Replace this with the published CSV URL for the
+  // "Aggregate" tab only (File > Share > Publish to web > choose
+  // the Aggregate sheet > CSV). Never point this at the raw
+  // response sheet - that would expose individual student data.
+  //
+  // Expected CSV format (one header row, one row per subject):
+  // Subject,DiagFoundational,DiagDeveloping,DiagStrong,CheckpointPassed,CheckpointNotYet
+  // Math,4,7,3,,
+  // RLA,2,8,4,,
+  // (Leave the last two columns blank until that subject's
+  // checkpoint has happened - the dashboard will detect this
+  // and show diagnostic-only until then.)
+  // ============================================================
+  const AGGREGATE_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfoI8kqop6zSGjVkwG_xMVBrLRaIW4SIL01DWRTW-7xXoPlR57uVHMvlLibkMl-9uNI3rju3XxBZzH/pub?gid=522586818&single=true&output=csv";
+
+  const SUBJECT_COLORS = {
+    "Math": "#F58427",
+    "RLA": "#004B97",
+    "Science": "#77C045",
+    "Social Studies": "#00B2EE",
+  };
+  const FOUND_COLOR = "#D9D4C4";
+  const DEV_COLOR = "#FCB41A";
+  const STRONG_COLOR = "#3C7A64";
+
+  function parseCSV(text) {
+    return text.trim().split("\n").map(row => row.split(",").map(cell => cell.trim().replace(/^"|"$/g, "")));
+  }
+
+  function barSegment(width, color, label) {
+    if (width <= 0) return "";
+    return '<div class="barSeg" style="width:' + width + '%; background:' + color + '">' + (width >= 12 ? label : "") + '</div>';
+  }
+
+  async function loadDashboard() {
+    const area = document.getElementById("chartArea");
+    if (AGGREGATE_CSV_URL.startsWith("REPLACE_WITH")) {
+      area.innerHTML = '<div class="errorBox">This dashboard isn\'t connected yet. Once the Aggregate tab is published, paste its CSV URL into this page\'s AGGREGATE_CSV_URL setting.</div>';
+      return;
+    }
+    try {
+      const res = await fetch(AGGREGATE_CSV_URL);
+      if (!res.ok) throw new Error("Fetch failed: " + res.status);
+      const text = await res.text();
+      const rows = parseCSV(text);
+      const dataRows = rows.slice(1).filter(r => r.length > 1 && r[0]);
+
+      if (dataRows.length === 0) {
+        area.innerHTML = '<p class="emptyState">No diagnostic results yet. Check back after Session 1.</p>';
+        return;
+      }
+
+      let html = "";
+      dataRows.forEach(row => {
+        const subject = row[0];
+        const diagF = parseInt(row[1]) || 0;
+        const diagD = parseInt(row[2]) || 0;
+        const diagS = parseInt(row[3]) || 0;
+        const diagTotal = diagF + diagD + diagS;
+
+        const cpPassedRaw = row[4];
+        const cpNotYetRaw = row[5];
+        const hasCheckpoint = cpPassedRaw !== undefined && cpPassedRaw !== "" && cpNotYetRaw !== undefined && cpNotYetRaw !== "";
+
+        html += '<div class="subjectBlock">';
+        html += '<div class="subjectHead"><h3>' + subject + '</h3>';
+        html += '<span class="statusPill ' + (hasCheckpoint ? "complete" : "before-only") + '">' + (hasCheckpoint ? "Checkpoint Complete" : "Diagnostic Only") + '</span></div>';
+
+        // Before (diagnostic) row
+        const dfPct = diagTotal > 0 ? (diagF / diagTotal) * 100 : 0;
+        const ddPct = diagTotal > 0 ? (diagD / diagTotal) * 100 : 0;
+        const dsPct = diagTotal > 0 ? (diagS / diagTotal) * 100 : 0;
+        html += '<div class="compareRow"><div class="compareLabel">Before</div><div class="barTrack">' +
+          barSegment(dfPct, FOUND_COLOR, diagF) + barSegment(ddPct, DEV_COLOR, diagD) + barSegment(dsPct, STRONG_COLOR, diagS) +
+          '</div></div>';
+
+        // After (checkpoint) row, only if data present
+        if (hasCheckpoint) {
+          const cpPassed = parseInt(cpPassedRaw) || 0;
+          const cpNotYet = parseInt(cpNotYetRaw) || 0;
+          const cpTotal = cpPassed + cpNotYet;
+          const passedPct = cpTotal > 0 ? (cpPassed / cpTotal) * 100 : 0;
+          const notYetPct = cpTotal > 0 ? (cpNotYet / cpTotal) * 100 : 0;
+          html += '<div class="compareRow"><div class="compareLabel">After</div><div class="barTrack">' +
+            barSegment(notYetPct, DEV_COLOR, cpNotYet) + barSegment(passedPct, STRONG_COLOR, cpPassed) +
+            '</div></div>';
+        }
+        html += '</div>';
+      });
+      area.innerHTML = html;
+    } catch (e) {
+      area.innerHTML = '<div class="errorBox">Couldn\'t load class results right now. Try refreshing, or check that the Aggregate tab is still published.</div>';
+      console.error(e);
+    }
+  }
+
+  loadDashboard();
+</script>
+
+</body>
+</html>
