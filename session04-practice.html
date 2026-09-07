@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4 Take-Home | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76;
+    --good:#3C7A64; --bad:#C94C4C;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--cream); color:var(--ink);}
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.6rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-60px; right:-60px; width:180px; height:180px; background:var(--coral); opacity:0.35; border-radius:50%;}
+  header h1{font-family:Georgia,serif; font-size:1.9rem; margin:0 0 0.4rem; position:relative;}
+  header p{margin:0; color:var(--gold); font-size:1rem; position:relative;}
+  .backlinks{position:relative; margin-top:0.8rem;}
+  .backlinks a{color:#EDEBF6; font-size:0.85rem; text-decoration:underline; margin:0 0.6rem;}
+  .wrap{max-width:760px; margin:1.6rem auto 3rem; padding:0 1.2rem;}
+
+  nav.tabs{display:flex; gap:0.5rem; background:#fff; border-radius:16px; padding:0.4rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:1.5rem;}
+  nav.tabs button{flex:1; border:none; background:transparent; padding:0.75rem 0.5rem; font-size:0.92rem; font-weight:600; color:var(--muted); border-radius:12px; cursor:pointer;}
+  nav.tabs button.active{background:var(--navy); color:#fff;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{background:#fff; border-radius:16px; padding:1.5rem 1.6rem; margin-bottom:1.3rem; box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+  .card h2{font-family:Georgia,serif; font-size:1.15rem; color:var(--navy); margin:0 0 0.5rem;}
+  .card p.sub{color:var(--muted); font-size:0.9rem; margin:0 0 1rem;}
+  .badge{display:inline-block; background:var(--gold); color:#2B2B2B; font-size:0.7rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px; margin-bottom:0.5rem;}
+  .prompt{font-size:1rem; margin:0.4rem 0 0.9rem; line-height:1.5;}
+
+  .options{display:flex; flex-direction:column; gap:0.55rem;}
+  .opt{text-align:left; padding:0.7rem 0.9rem; border:2px solid #E7E4DA; border-radius:10px; background:#fff; font-size:0.96rem; cursor:pointer;}
+  .opt:hover{border-color:var(--coral);}
+  .opt.correct{border-color:var(--good); background:#EAF5F0; font-weight:600;}
+  .opt.incorrect{border-color:var(--bad); background:#FBEAEA;}
+
+  .feedback{margin-top:0.7rem; font-size:0.92rem; padding:0.65rem 0.85rem; border-radius:10px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:#EAF5F0; color:var(--good);}
+  .feedback.bad{background:#FBEAEA; color:var(--bad);}
+
+  .passage{font-size:1rem; line-height:1.9;}
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
+
+  input[type=text], select{padding:0.6rem 0.8rem; border:2px solid #E7E4DA; border-radius:10px; font-size:0.95rem; max-width:260px;}
+  input[type=text]:focus, select:focus{outline:none; border-color:var(--navy);}
+  button.check{background:var(--coral); color:#fff; border:none; padding:0.6rem 1.3rem; border-radius:999px; font-weight:700; font-size:0.9rem; cursor:pointer; margin-top:0.6rem;}
+  button.check:hover{background:var(--coral-dark);}
+
+  .sliderRow{margin-bottom:1.5rem;}
+  .sliderRow .top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;}
+  .sliderRow .top span.val{font-weight:700; color:var(--coral);}
+  input[type=range]{width:100%; accent-color:var(--coral);}
+  .scaleLabels{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;}
+  button.save{background:var(--navy); color:#fff; border:none; padding:0.7rem 1.5rem; border-radius:999px; font-weight:700; font-size:0.95rem; cursor:pointer;}
+  button.save:hover{background:var(--navy-dark);}
+  .savedNote{font-size:0.85rem; color:var(--good); margin-top:0.6rem; display:none;}
+  .savedNote.show{display:block;}
+
+  .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Session 4 Take-Home</h1>
+  <p>10 minutes &bull; solving for x</p>
+  <div class="backlinks">
+    <a href="sessions.html">&larr; All Sessions</a>
+    <a href="progress.html">My Progress</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="practice">Practice</button>
+    <button class="tab-btn" data-tab="confidence">Check In</button>
+  </nav>
+
+  <section class="panel active" id="panel-practice">
+
+    <div class="card">
+      <span class="badge">MULTIPLE CHOICE</span>
+      <h2>One-Step Equations</h2>
+      <p class="prompt">Solve: <strong>x + 9 = 15</strong></p>
+      <div class="options" id="mc1Options">
+        <button class="opt" data-correct="false">x = 24</button>
+        <button class="opt" data-correct="true">x = 6</button>
+        <button class="opt" data-correct="false">x = 9</button>
+        <button class="opt" data-correct="false">x = 15</button>
+      </div>
+      <div class="feedback" id="mc1Feedback"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">FILL IN THE BLANK</span>
+      <h2>One-Step Equations</h2>
+      <p class="prompt">Solve for x: <strong>5x = 35</strong>. x = ______</p>
+      <input type="text" id="blankInput1" placeholder="Type a number">
+      <button class="check" id="blankCheck1">Check My Answer</button>
+      <div class="feedback" id="blankFeedback1"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">DROP-DOWN</span>
+      <h2>Two-Step Equations</h2>
+      <p class="prompt">To solve <strong>2x + 3 = 11</strong>, the first step is to
+        <select id="dropdown1">
+          <option value="">choose one</option>
+          <option value="correct">subtract 3 from both sides</option>
+          <option value="wrong1">divide both sides by 2</option>
+          <option value="wrong2">add 3 to both sides</option>
+        </select>.
+      </p>
+      <button class="check" id="dropdownCheck1">Check My Answer</button>
+      <div class="feedback" id="dropdownFeedback1"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">FILL IN THE BLANK</span>
+      <h2>Two-Step Equations</h2>
+      <p class="prompt">Solve for x: <strong>4x &minus; 5 = 11</strong>. x = ______</p>
+      <input type="text" id="blankInput2" placeholder="Type a number">
+      <button class="check" id="blankCheck2">Check My Answer</button>
+      <div class="feedback" id="blankFeedback2"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">SELECT-AN-AREA</span>
+      <h2>Expressions vs. Equations</h2>
+      <p class="prompt">Click the one that is an <strong>equation</strong> (not just an expression):</p>
+      <p class="passage" id="passage1">
+        <span class="seg" data-correct="false">7x + 2</span> &nbsp;&nbsp;
+        <span class="seg" data-correct="true">7x + 2 = 23</span> &nbsp;&nbsp;
+        <span class="seg" data-correct="false">3x</span>
+      </p>
+      <div class="feedback" id="passageFeedback1"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-confidence">
+    <div class="card">
+      <h2>How Confident Do You Feel Right Now?</h2>
+      <p class="sub">Be honest &mdash; this is just for you to track how you're feeling week to week. No wrong answers.</p>
+
+      <div class="sliderRow" data-subject="Math">
+        <div class="top"><span>Math</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="RLA">
+        <div class="top"><span>Reading &amp; Writing (RLA)</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Science">
+        <div class="top"><span>Science</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Social Studies">
+        <div class="top"><span>Social Studies</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+
+      <button class="save" id="saveConfidence">Save My Check-In</button>
+      <div class="savedNote" id="confidenceSaved">Saved! Check My Progress to see your trend.</div>
+    </div>
+  </section>
+
+  <p class="footNote">Want more practice on your own? GED.com offers free, untimed <a href="https://tools.ged.com/en/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">test preview tutorials</a> for every subject (also available <a href="https://tools.ged.com/es/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">en Espa&ntilde;ol</a>).</p>
+  <p class="footNote">Your answers are saved on this device only. If you switch computers, they won't carry over. Questions? Bring them to Thursday office hours.</p>
+</div>
+
+<script>
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+function wireMC(containerId, feedbackId, correctText, wrongText) {
+  document.querySelectorAll("#" + containerId + " .opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const correct = btn.dataset.correct === "true";
+      document.querySelectorAll("#" + containerId + " .opt").forEach(b => b.disabled = true);
+      btn.classList.add(correct ? "correct" : "incorrect");
+      if (!correct) {
+        document.querySelectorAll("#" + containerId + " .opt").forEach(b => { if (b.dataset.correct === "true") b.classList.add("correct"); });
+      }
+      const fb = document.getElementById(feedbackId);
+      fb.classList.add("show", correct ? "good" : "bad");
+      fb.textContent = correct ? correctText : wrongText;
+    });
+  });
+}
+wireMC("mc1Options", "mc1Feedback", "Correct! Subtract 9 from both sides: x = 6.", "Not quite \u2014 subtract 9 from both sides: 15 \u2212 9 = 6.");
+
+document.getElementById("blankCheck1").addEventListener("click", () => {
+  const val = document.getElementById("blankInput1").value.trim();
+  const correct = val === "7";
+  const fb = document.getElementById("blankFeedback1");
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct ? "Correct! Divide both sides by 5: x = 7." : "Not quite \u2014 divide both sides by 5: 35 \u00f7 5 = 7.";
+});
+
+document.getElementById("dropdownCheck1").addEventListener("click", () => {
+  const val = document.getElementById("dropdown1").value;
+  const fb = document.getElementById("dropdownFeedback1");
+  if (!val) { fb.classList.add("show", "bad"); fb.textContent = "Pick an option from the menu first."; return; }
+  const correct = val === "correct";
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct ? "Correct! Undo addition/subtraction first: subtract 3 from both sides." : "Not quite \u2014 always undo addition/subtraction first: subtract 3 from both sides.";
+});
+
+document.getElementById("blankCheck2").addEventListener("click", () => {
+  const val = document.getElementById("blankInput2").value.trim();
+  const correct = val === "4";
+  const fb = document.getElementById("blankFeedback2");
+  fb.classList.add("show", correct ? "good" : "bad");
+  fb.textContent = correct ? "Correct! Add 5 (4x=16), then divide by 4: x = 4." : "Not quite \u2014 add 5 to both sides (4x = 16), then divide by 4: x = 4.";
+});
+
+document.querySelectorAll("#passage1 .seg").forEach(seg => {
+  seg.addEventListener("click", () => {
+    const correct = seg.dataset.correct === "true";
+    document.querySelectorAll("#passage1 .seg").forEach(s => s.style.pointerEvents = "none");
+    seg.classList.add(correct ? "correct" : "incorrect");
+    if (!correct) {
+      document.querySelectorAll("#passage1 .seg").forEach(s => { if (s.dataset.correct === "true") s.classList.add("correct"); });
+    }
+    const fb = document.getElementById("passageFeedback1");
+    fb.classList.add("show", correct ? "good" : "bad");
+    fb.textContent = correct
+      ? "Right \u2014 it has an equals sign, so it can be solved."
+      : "That one's just an expression \u2014 no equals sign, so there's nothing to solve yet. Look for the one WITH an equals sign.";
+  });
+});
+
+document.querySelectorAll(".sliderRow input[type=range]").forEach(input => {
+  input.addEventListener("input", () => {
+    input.closest(".sliderRow").querySelector(".val").textContent = input.value;
+  });
+});
+function loadConfidence() {
+  try {
+    const raw = localStorage.getItem("confidence-week-04");
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.querySelectorAll(".sliderRow").forEach(row => {
+        const subject = row.dataset.subject;
+        if (data[subject] !== undefined) {
+          const input = row.querySelector("input[type=range]");
+          input.value = data[subject];
+          row.querySelector(".val").textContent = data[subject];
+        }
+      });
+    }
+  } catch (e) {}
+}
+document.getElementById("saveConfidence").addEventListener("click", () => {
+  const data = {};
+  document.querySelectorAll(".sliderRow").forEach(row => {
+    data[row.dataset.subject] = row.querySelector("input[type=range]").value;
+  });
+  localStorage.setItem("confidence-week-04", JSON.stringify(data));
+  localStorage.setItem("completed-week-04", new Date().toISOString());
+  const note = document.getElementById("confidenceSaved");
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 3000);
+});
+loadConfidence();
+</script>
+
+</body>
+</html>
