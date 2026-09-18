@@ -30,6 +30,7 @@
   .card h2{font-family:Georgia,serif; font-size:1.15rem; color:var(--navy); margin:0 0 0.5rem;}
   .card p.sub{color:var(--muted); font-size:0.9rem; margin:0 0 1rem;}
   .badge{display:inline-block; background:var(--gold); color:#2B2B2B; font-size:0.7rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px; margin-bottom:0.5rem;}
+  .badge.nocalc{background:var(--coral); color:#fff; margin-left:0.4rem;}
   .prompt{font-size:1rem; margin:0.4rem 0 0.9rem; line-height:1.5;}
 
   .options{display:flex; flex-direction:column; gap:0.55rem;}
@@ -81,9 +82,9 @@
   <section class="panel active" id="panel-practice">
 
     <div class="card">
-      <span class="badge">MULTIPLE CHOICE</span>
+      <span class="badge">MULTIPLE CHOICE</span><span class="badge nocalc">NO CALCULATOR</span>
       <h2>Order of Operations</h2>
-      <p class="prompt">What is <strong>10 + 6 &divide; 2</strong>?</p>
+      <p class="prompt">Try this one in your head or on paper &mdash; no calculator, just like the real GED's opening questions. What is <strong>10 + 6 &divide; 2</strong>?</p>
       <div class="options" id="mc1Options">
         <button class="opt" data-correct="false">8</button>
         <button class="opt" data-correct="false">18</button>
@@ -94,9 +95,9 @@
     </div>
 
     <div class="card">
-      <span class="badge">MULTIPLE CHOICE</span>
+      <span class="badge">MULTIPLE CHOICE</span><span class="badge nocalc">NO CALCULATOR</span>
       <h2>Order of Operations</h2>
-      <p class="prompt">What is <strong>(4 + 1) &times; 6</strong>?</p>
+      <p class="prompt">Same rule here &mdash; work it out without a calculator. What is <strong>(4 + 1) &times; 6</strong>?</p>
       <div class="options" id="mc2Options">
         <button class="opt" data-correct="false">10</button>
         <button class="opt" data-correct="true">30</button>
