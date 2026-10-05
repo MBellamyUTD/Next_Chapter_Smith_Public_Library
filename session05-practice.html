@@ -150,6 +150,12 @@
       </p>
       <div class="feedback" id="passageFeedback1"></div>
     </div>
+  
+    <div class="card" style="text-align:center; border:2px dashed var(--coral);">
+      <h2>Want more practice?</h2>
+      <p class="sub">The <strong>Extra Practice</strong> tab has more questions in every format, plus a Challenge Round of harder GED-style problems.</p>
+      <button class="save" id="goExtra">Go to Extra Practice &rarr;</button>
+    </div>
   </section>
 
   <section class="panel" id="panel-extra"><div id="extraRoot"></div></section>
@@ -369,6 +375,12 @@ loadConfidence();
 <script>
 const EXTRA_ITEMS = [{"divider": "More Practice", "sub": "Extra reps on everything from tonight, in all four GED formats."}, {"type": "mc", "title": "Coordinates", "prompt": "Which point is in the lower-left quadrant?", "opts": ["(3, −2)", "(−3, −2)", "(−3, 2)", "(3, 2)"], "c": 1, "exp": "Lower-left means negative x and negative y: (−3, −2).", "tier": null}, {"type": "mc", "title": "Coordinates", "prompt": "A point is 4 units left and 3 units up from the origin. What are its coordinates?", "opts": ["(4, 3)", "(−4, −3)", "(3, −4)", "(−4, 3)"], "c": 3, "exp": "Left 4 means x = −4. Up 3 means y = 3: (−4, 3).", "tier": null}, {"type": "fill", "title": "Points on a Line", "prompt": "For <strong>y = 4x − 3</strong>, what is y when x = 2? y = ______", "answers": ["5"], "exp": "y = 4(2) − 3 = 8 − 3 = 5.", "tier": null, "ph": "Type your answer"}, {"type": "fill", "title": "Slope", "prompt": "What is the slope of <strong>y = 7x + 1</strong>? slope = ______", "answers": ["7"], "exp": "The slope is the number multiplied by x: 7.", "tier": null, "ph": "Type your answer"}, {"type": "dropdown", "title": "Intercept", "prompt": "The y-intercept of y = −2x + 8 is", "opts": ["−2", "2", "8"], "c": 2, "exp": "The y-intercept is the number added at the end: 8.", "tier": null}, {"type": "dropdown", "title": "Slope Direction", "prompt": "A line with a slope of −3 goes", "opts": ["downhill", "uphill", "flat"], "c": 0, "exp": "A negative slope means the line goes downhill from left to right.", "tier": null}, {"type": "select", "title": "Slope & Intercept", "prompt": "Click the equation whose slope is 4:", "opts": ["y = 9x + 4", "y = x + 36", "y = 4x + 9"], "c": 2, "exp": "In y = mx + b, the slope m is the number times x. y = 4x + 9 has slope 4.", "tier": null}, {"type": "fill", "title": "Slope from Two Points", "prompt": "Find the slope between (1, 2) and (3, 8). slope = ______", "answers": ["3"], "exp": "(8 − 2) ÷ (3 − 1) = 6 ÷ 2 = 3.", "tier": null, "ph": "Type your answer"}, {"type": "mc", "title": "Slope from Two Points", "prompt": "What is the slope of the line through (0, 5) and (5, 0)?", "opts": ["1", "5", "−1", "−5"], "c": 2, "exp": "(0 − 5) ÷ (5 − 0) = −5 ÷ 5 = −1.", "tier": null}, {"type": "mc", "title": "Writing an Equation", "prompt": "Which equation has a slope of 3 and a y-intercept of −2?", "opts": ["y = 3x − 2", "y = −2x + 3", "y = 3x + 2", "y = 2x − 3"], "c": 0, "exp": "Plug into y = mx + b: y = 3x − 2.", "tier": null}, {"divider": "Challenge Round", "sub": "Harder, GED-style questions with realistic numbers and more than one step. Take your time."}, {"type": "mc", "title": "Modeling Growth", "prompt": "A scientist measured a tree's trunk. In year 3 it was 6 inches wide. In year 11 it was 14 inches wide. Which equation models the diameter y in year x?", "opts": ["y = 2x", "y = x + 6", "y = x + 3", "y = 8x + 3"], "c": 2, "exp": "Slope = (14 − 6) ÷ (11 − 3) = 1. Use y = x + b with (3, 6): 6 = 3 + b, so b = 3. y = x + 3.", "tier": "CHALLENGE"}, {"type": "mc", "title": "Plotting Data", "prompt": "Using that same tree data, which ordered pair (year, diameter) shows year 11?", "opts": ["(14, 11)", "(11, 14)", "(3, 6)", "(6, 3)"], "c": 1, "exp": "The pair is (x, y) = (year, diameter) = (11, 14).", "tier": "CHALLENGE"}, {"type": "mc", "title": "Real-World Equation", "prompt": "A gym charges a $30 sign-up fee plus $25 per month. Which equation gives the total cost y after x months?", "opts": ["y = 30x + 25", "y = 55x", "y = x + 55", "y = 25x + 30"], "c": 3, "exp": "The monthly rate is the slope (25). The sign-up fee is the y-intercept (30): y = 25x + 30.", "tier": "CHALLENGE"}, {"type": "fill", "title": "Using the Equation", "prompt": "Using y = 25x + 30, what is the total cost after 6 months? $______", "answers": ["180"], "exp": "y = 25(6) + 30 = 150 + 30 = 180.", "tier": "CHALLENGE", "ph": "Type your answer"}, {"type": "mc", "title": "Interpreting Slope", "prompt": "A candle is 12 inches tall at hour 0 and 4 inches tall at hour 4. What is the slope of the line through those points?", "opts": ["−2", "2", "−8", "8"], "c": 0, "exp": "(4 − 12) ÷ (4 − 0) = −8 ÷ 4 = −2 inches per hour. The candle gets shorter, so the slope is negative.", "tier": "CHALLENGE"}];
 window.__renderQuestions('extraRoot', EXTRA_ITEMS);
+</script>
+<script>
+document.getElementById("goExtra").addEventListener("click", function(){
+  document.querySelector('[data-tab="extra"]').click();
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
 </script>
 </body>
 </html>

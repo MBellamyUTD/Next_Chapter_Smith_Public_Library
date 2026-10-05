@@ -96,7 +96,13 @@
     <button class="tab-btn" data-tab="confidence">Check In</button>
   </nav>
 
-  <section class="panel active" id="panel-practice"><div id="coreRoot"></div></section>
+  <section class="panel active" id="panel-practice"><div id="coreRoot"></div>
+    <div class="card" style="text-align:center; border:2px dashed var(--coral);">
+      <h2>Want more practice?</h2>
+      <p class="sub">The <strong>Extra Practice</strong> tab has more questions in every format, plus a Challenge Round of harder GED-style problems.</p>
+      <button class="save" id="goExtra">Go to Extra Practice &rarr;</button>
+    </div>
+</section>
 
   <section class="panel" id="panel-extra"><div id="extraRoot"></div></section>
 
@@ -260,5 +266,11 @@ const EXTRA_ITEMS = [{"divider": "More Practice", "sub": "Extra reps on everythi
 window.__renderQuestions('extraRoot', EXTRA_ITEMS);
 </script>
 
+<script>
+document.getElementById("goExtra").addEventListener("click", function(){
+  document.querySelector('[data-tab="extra"]').click();
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
+</script>
 </body>
 </html>
