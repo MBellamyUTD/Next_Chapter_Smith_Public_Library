@@ -65,6 +65,18 @@
   .savedNote.show{display:block;}
 
   .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+
+  .tierHead{margin:2rem 0 1rem; padding:1rem 1.2rem; border-left:5px solid var(--coral); background:#fff; border-radius:0 12px 12px 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .tierHead h3{font-family:Georgia,serif; color:var(--navy); margin:0 0 0.2rem; font-size:1.2rem;}
+  .tierHead p{margin:0; color:var(--muted); font-size:0.9rem;}
+  .badge.tierBadge{background:var(--coral); color:#fff; margin-left:0.4rem;}
+  .badge.nocalc{background:var(--coral); color:#fff; margin-left:0.4rem;}
+  .opt:disabled{color:#2B2B2B; opacity:1; cursor:default;}
+  .passage{font-size:1rem; line-height:1.9;}
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
 </style>
 </head>
 <body>
@@ -81,6 +93,7 @@
 <div class="wrap">
   <nav class="tabs">
     <button class="tab-btn active" data-tab="practice">Practice</button>
+    <button class="tab-btn" data-tab="extra">Extra Practice</button>
     <button class="tab-btn" data-tab="confidence">Check In</button>
   </nav>
 
@@ -147,7 +160,15 @@
       </div>
       <div class="feedback" id="mc2Feedback"></div>
     </div>
+  
+    <div class="card" style="text-align:center; border:2px dashed var(--coral);">
+      <h2>Want more practice?</h2>
+      <p class="sub">The <strong>Extra Practice</strong> tab has more questions in every format, plus a Challenge Round of harder GED-style problems.</p>
+      <button class="save" id="goExtra">Go to Extra Practice &rarr;</button>
+    </div>
   </section>
+
+  <section class="panel" id="panel-extra"><div id="extraRoot"></div></section>
 
   <section class="panel" id="panel-confidence">
     <div class="card">
@@ -280,5 +301,90 @@ document.getElementById("saveConfidence").addEventListener("click", () => {
 loadConfidence();
 </script>
 
+
+<script>
+(function(){
+  const BADGES = {mc:"MULTIPLE CHOICE", fill:"FILL IN THE BLANK", dropdown:"DROP-DOWN", select:"SELECT-AN-AREA"};
+  function norm(s){ return String(s).toLowerCase().replace(/[$,\s]/g,"").replace(/^0+(?=\d)/,""); }
+  function showFeedback(fb, ok, q){
+    fb.className = "feedback show " + (ok ? "good" : "bad");
+    fb.textContent = (ok ? "Correct! " : "Not quite. ") + q.exp;
+  }
+  function render(rootId, items){
+    const root = document.getElementById(rootId);
+    items.forEach(q => {
+      if (q.divider) {
+        const d = document.createElement("div");
+        d.className = "tierHead";
+        d.innerHTML = "<h3>" + q.divider + "</h3><p>" + q.sub + "</p>";
+        root.appendChild(d);
+        return;
+      }
+      const card = document.createElement("div");
+      card.className = "card";
+      let html = '<span class="badge">' + BADGES[q.type] + '</span>';
+      if (q.nocalc) html += '<span class="badge nocalc">NO CALCULATOR</span>';
+      if (q.tier) html += '<span class="badge tierBadge">' + q.tier + '</span>';
+      html += '<h2>' + q.title + '</h2><p class="prompt">' + q.prompt + '</p>';
+      if (q.type === "mc") {
+        html += '<div class="options">' + q.opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+o+'</button>').join("") + '</div>';
+      } else if (q.type === "fill") {
+        html += '<input type="text" placeholder="Type your answer"> <button class="check">Check My Answer</button>';
+      } else if (q.type === "dropdown") {
+        html += '<select><option value="">choose one</option>' + q.opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join("") + '</select> <button class="check">Check My Answer</button>';
+      } else if (q.type === "select") {
+        html += '<p class="passage">' + q.opts.map((o,i)=>'<span class="seg" data-i="'+i+'">'+o+'</span>').join(" &nbsp;&nbsp; ") + '</p>';
+      }
+      html += '<div class="feedback"></div>';
+      card.innerHTML = html;
+      root.appendChild(card);
+      const fb = card.querySelector(".feedback");
+
+      if (q.type === "mc") {
+        const btns = card.querySelectorAll(".opt");
+        btns.forEach(b => b.addEventListener("click", () => {
+          const ok = Number(b.dataset.i) === q.c;
+          btns.forEach(x => x.disabled = true);
+          b.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) btns[q.c].classList.add("correct");
+          showFeedback(fb, ok, q);
+        }));
+      } else if (q.type === "fill") {
+        card.querySelector(".check").addEventListener("click", () => {
+          const v = norm(card.querySelector("input").value);
+          if (!v) { fb.className = "feedback show bad"; fb.textContent = "Type an answer first."; return; }
+          showFeedback(fb, q.answers.map(norm).includes(v), q);
+        });
+      } else if (q.type === "dropdown") {
+        card.querySelector(".check").addEventListener("click", () => {
+          const v = card.querySelector("select").value;
+          if (v === "") { fb.className = "feedback show bad"; fb.textContent = "Pick an option from the menu first."; return; }
+          showFeedback(fb, Number(v) === q.c, q);
+        });
+      } else if (q.type === "select") {
+        const segs = card.querySelectorAll(".seg");
+        segs.forEach(s => s.addEventListener("click", () => {
+          const ok = Number(s.dataset.i) === q.c;
+          segs.forEach(x => x.style.pointerEvents = "none");
+          s.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) segs[q.c].classList.add("correct");
+          showFeedback(fb, ok, q);
+        }));
+      }
+    });
+  }
+  window.__renderQuestions = render;
+})();
+</script>
+<script>
+const EXTRA_ITEMS = [{"divider": "More Practice", "sub": "Extra reps on everything from this session, in all four GED formats."}, {"type": "mc", "title": "Ratios", "prompt": "A recipe uses 2 cups of rice for every 3 cups of water. How many cups of water are needed for 8 cups of rice?", "opts": ["10", "12", "16", "11"], "c": 1, "exp": "2 was multiplied by 4 to get 8, so multiply 3 by 4: 12 cups of water.", "tier": null}, {"type": "mc", "title": "Rates", "prompt": "You earn $60 for 4 hours of work. At that rate, how much do you earn for 10 hours?", "opts": ["$100", "$120", "$150", "$240"], "c": 2, "exp": "$60 ÷ 4 = $15 per hour. $15 × 10 = $150.", "tier": null}, {"type": "fill", "title": "Map Scale", "prompt": "A map scale is 1 inch = 25 miles. How many miles is 3.5 inches? ______ miles", "answers": ["87.5"], "exp": "3.5 × 25 = 87.5 miles.", "tier": null, "ph": "Type your answer"}, {"type": "fill", "title": "Percent of an Amount", "prompt": "What is 15% of $80? $______", "answers": ["12"], "exp": "15% = 0.15. 0.15 × 80 = 12.", "tier": null, "ph": "Type your answer"}, {"type": "dropdown", "title": "Percent as a Decimal", "prompt": "To find 20% of a number, multiply the number by", "opts": ["20", "2.0", "0.20"], "c": 2, "exp": "20% = 0.20, so multiply by 0.20.", "tier": null}, {"type": "dropdown", "title": "Writing Ratios", "prompt": "A ratio of 3 to 5 can also be written as", "opts": ["3:5", "5:3", "3 + 5"], "c": 0, "exp": "“3 to 5” is written 3:5.", "tier": null}, {"type": "select", "title": "Spotting a Ratio", "prompt": "Click the sentence that describes a ratio:", "opts": ["The class meets for 2 hours.", "There are 3 teachers for every 30 students.", "The room is 20 feet wide."], "c": 1, "exp": "A ratio compares two quantities: 3 teachers to 30 students.", "tier": null}, {"type": "select", "title": "Discount Steps", "prompt": "A $50 item is 20% off. Click the first step for finding the sale price:", "opts": ["Find 20% of $50", "Add 20 to 50", "Divide 50 by 20"], "c": 0, "exp": "First find the discount: 0.20 × 50 = $10. Then subtract it from $50.", "tier": null}, {"type": "mc", "title": "Tips", "prompt": "Your restaurant bill is $50 and you leave a 20% tip. How much is the tip?", "opts": ["$10", "$20", "$5", "$70"], "c": 0, "exp": "0.20 × 50 = $10.", "tier": null}, {"type": "mc", "title": "Discounts", "prompt": "A $120 coat is 25% off. What is the sale price?", "opts": ["$30", "$95", "$145", "$90"], "c": 3, "exp": "25% of 120 = $30 off. 120 − 30 = $90.", "tier": null}, {"type": "fill", "title": "Sales Tax", "prompt": "A bill is $30 and the sales tax is 8%. How much is the tax? $______", "answers": ["2.4", "2.40"], "exp": "0.08 × 30 = $2.40.", "tier": null, "ph": "Type your answer"}, {"divider": "Challenge Round", "sub": "Harder, GED-style questions with realistic numbers and more than one step. Take your time."}, {"type": "mc", "title": "Rate with Elapsed Time", "prompt": "A landscaper started work at 8:30 a.m., finished at 2:30 p.m., and charged $132. What was his hourly rate?", "opts": ["$22.00", "$18.86", "$26.40", "$24.00"], "c": 0, "exp": "8:30 a.m. to 2:30 p.m. is 6 hours. $132 ÷ 6 = $22 per hour.", "tier": "CHALLENGE"}, {"type": "mc", "title": "Discount, Then Tax", "prompt": "Boots cost $85 and are 30% off. Then 8% sales tax is added to the sale price. What is the final price?", "opts": ["$59.50", "$64.26", "$66.30", "$91.80"], "c": 1, "exp": "30% off: 85 × 0.30 = 25.50, so the sale price is $59.50. Tax: 59.50 × 0.08 = 4.76. Total: $64.26.", "tier": "CHALLENGE"}, {"type": "mc", "title": "Multi-Step Discount", "prompt": "A school photo costs $12.50. A club buys 40 photos and gets 15% off the total. What does the club pay?", "opts": ["$75", "$485", "$425", "$500"], "c": 2, "exp": "12.50 × 40 = $500. 15% of 500 = $75 off. 500 − 75 = $425.", "tier": "CHALLENGE"}, {"type": "mc", "title": "Rates", "prompt": "A truck uses 5 gallons of gas to travel 120 miles. At that rate, how many gallons does it need to travel 300 miles?", "opts": ["10", "15", "24", "12.5"], "c": 3, "exp": "120 was multiplied by 2.5 to get 300, so multiply 5 by 2.5: 12.5 gallons.", "tier": "CHALLENGE"}, {"type": "fill", "title": "Scaling a Recipe", "prompt": "A recipe makes 12 muffins using 3 cups of flour. How many cups of flour are needed for 60 muffins? ______ cups", "answers": ["15"], "exp": "12 was multiplied by 5 to get 60, so multiply 3 by 5: 15 cups.", "tier": "CHALLENGE", "ph": "Type your answer"}, {"type": "fill", "title": "Bill Plus Tip", "prompt": "Sam's restaurant bill is $64. He leaves an 18% tip. What is the total he pays? $______", "answers": ["75.52"], "exp": "Tip: 0.18 × 64 = 11.52. Total: 64 + 11.52 = $75.52.", "tier": "CHALLENGE", "ph": "Type your answer"}];
+window.__renderQuestions('extraRoot', EXTRA_ITEMS);
+</script>
+<script>
+document.getElementById("goExtra").addEventListener("click", function(){
+  document.querySelector('[data-tab="extra"]').click();
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
+</script>
 </body>
 </html>

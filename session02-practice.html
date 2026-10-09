@@ -60,6 +60,18 @@
   .savedNote.show{display:block;}
 
   .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+
+  .tierHead{margin:2rem 0 1rem; padding:1rem 1.2rem; border-left:5px solid var(--coral); background:#fff; border-radius:0 12px 12px 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .tierHead h3{font-family:Georgia,serif; color:var(--navy); margin:0 0 0.2rem; font-size:1.2rem;}
+  .tierHead p{margin:0; color:var(--muted); font-size:0.9rem;}
+  .badge.tierBadge{background:var(--coral); color:#fff; margin-left:0.4rem;}
+  .badge.nocalc{background:var(--coral); color:#fff; margin-left:0.4rem;}
+  .opt:disabled{color:#2B2B2B; opacity:1; cursor:default;}
+  .passage{font-size:1rem; line-height:1.9;}
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
 </style>
 </head>
 <body>
@@ -76,6 +88,7 @@
 <div class="wrap">
   <nav class="tabs">
     <button class="tab-btn active" data-tab="practice">Practice</button>
+    <button class="tab-btn" data-tab="extra">Extra Practice</button>
     <button class="tab-btn" data-tab="confidence">Check In</button>
   </nav>
 
@@ -139,7 +152,15 @@
       <button class="check" id="blankCheck2">Check My Answer</button>
       <div class="feedback" id="blankFeedback2"></div>
     </div>
+  
+    <div class="card" style="text-align:center; border:2px dashed var(--coral);">
+      <h2>Want more practice?</h2>
+      <p class="sub">The <strong>Extra Practice</strong> tab has more questions in every format, plus a Challenge Round of harder GED-style problems.</p>
+      <button class="save" id="goExtra">Go to Extra Practice &rarr;</button>
+    </div>
   </section>
+
+  <section class="panel" id="panel-extra"><div id="extraRoot"></div></section>
 
   <section class="panel" id="panel-confidence">
     <div class="card">
@@ -264,5 +285,90 @@ document.getElementById("saveConfidence").addEventListener("click", () => {
 loadConfidence();
 </script>
 
+
+<script>
+(function(){
+  const BADGES = {mc:"MULTIPLE CHOICE", fill:"FILL IN THE BLANK", dropdown:"DROP-DOWN", select:"SELECT-AN-AREA"};
+  function norm(s){ return String(s).toLowerCase().replace(/[$,\s]/g,"").replace(/^0+(?=\d)/,""); }
+  function showFeedback(fb, ok, q){
+    fb.className = "feedback show " + (ok ? "good" : "bad");
+    fb.textContent = (ok ? "Correct! " : "Not quite. ") + q.exp;
+  }
+  function render(rootId, items){
+    const root = document.getElementById(rootId);
+    items.forEach(q => {
+      if (q.divider) {
+        const d = document.createElement("div");
+        d.className = "tierHead";
+        d.innerHTML = "<h3>" + q.divider + "</h3><p>" + q.sub + "</p>";
+        root.appendChild(d);
+        return;
+      }
+      const card = document.createElement("div");
+      card.className = "card";
+      let html = '<span class="badge">' + BADGES[q.type] + '</span>';
+      if (q.nocalc) html += '<span class="badge nocalc">NO CALCULATOR</span>';
+      if (q.tier) html += '<span class="badge tierBadge">' + q.tier + '</span>';
+      html += '<h2>' + q.title + '</h2><p class="prompt">' + q.prompt + '</p>';
+      if (q.type === "mc") {
+        html += '<div class="options">' + q.opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+o+'</button>').join("") + '</div>';
+      } else if (q.type === "fill") {
+        html += '<input type="text" placeholder="Type your answer"> <button class="check">Check My Answer</button>';
+      } else if (q.type === "dropdown") {
+        html += '<select><option value="">choose one</option>' + q.opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join("") + '</select> <button class="check">Check My Answer</button>';
+      } else if (q.type === "select") {
+        html += '<p class="passage">' + q.opts.map((o,i)=>'<span class="seg" data-i="'+i+'">'+o+'</span>').join(" &nbsp;&nbsp; ") + '</p>';
+      }
+      html += '<div class="feedback"></div>';
+      card.innerHTML = html;
+      root.appendChild(card);
+      const fb = card.querySelector(".feedback");
+
+      if (q.type === "mc") {
+        const btns = card.querySelectorAll(".opt");
+        btns.forEach(b => b.addEventListener("click", () => {
+          const ok = Number(b.dataset.i) === q.c;
+          btns.forEach(x => x.disabled = true);
+          b.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) btns[q.c].classList.add("correct");
+          showFeedback(fb, ok, q);
+        }));
+      } else if (q.type === "fill") {
+        card.querySelector(".check").addEventListener("click", () => {
+          const v = norm(card.querySelector("input").value);
+          if (!v) { fb.className = "feedback show bad"; fb.textContent = "Type an answer first."; return; }
+          showFeedback(fb, q.answers.map(norm).includes(v), q);
+        });
+      } else if (q.type === "dropdown") {
+        card.querySelector(".check").addEventListener("click", () => {
+          const v = card.querySelector("select").value;
+          if (v === "") { fb.className = "feedback show bad"; fb.textContent = "Pick an option from the menu first."; return; }
+          showFeedback(fb, Number(v) === q.c, q);
+        });
+      } else if (q.type === "select") {
+        const segs = card.querySelectorAll(".seg");
+        segs.forEach(s => s.addEventListener("click", () => {
+          const ok = Number(s.dataset.i) === q.c;
+          segs.forEach(x => x.style.pointerEvents = "none");
+          s.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) segs[q.c].classList.add("correct");
+          showFeedback(fb, ok, q);
+        }));
+      }
+    });
+  }
+  window.__renderQuestions = render;
+})();
+</script>
+<script>
+const EXTRA_ITEMS = [{"divider": "More Practice", "sub": "Extra reps on everything from this session, in all four GED formats."}, {"type": "mc", "title": "Order of Operations", "prompt": "What is 9 + 3 × 4?", "opts": ["48", "21", "30", "12"], "c": 1, "exp": "Multiply first: 3 × 4 = 12. Then add: 9 + 12 = 21.", "tier": null, "nocalc": true}, {"type": "mc", "title": "Order of Operations", "prompt": "What is (12 − 4) ÷ 2?", "opts": ["10", "8", "2", "4"], "c": 3, "exp": "Parentheses first: 12 − 4 = 8. Then divide: 8 ÷ 2 = 4.", "tier": null, "nocalc": true}, {"type": "fill", "title": "Order of Operations", "prompt": "What is <strong>20 − 2 × 3²</strong>? ______", "answers": ["2"], "exp": "Exponent first: 3² = 9. Multiply: 2 × 9 = 18. Subtract: 20 − 18 = 2.", "tier": null, "ph": "Type your answer", "nocalc": true}, {"type": "fill", "title": "Fraction to Decimal", "prompt": "Write <strong>3/8</strong> as a decimal. ______", "answers": ["0.375", ".375"], "exp": "Divide the top by the bottom: 3 ÷ 8 = 0.375.", "tier": null, "ph": "Type your answer"}, {"type": "dropdown", "title": "Decimal to Percentage", "prompt": "To change a decimal to a percentage, move the decimal point 2 places", "opts": ["left", "right", "to the end"], "c": 1, "exp": "Move it right: 0.45 becomes 45%.", "tier": null}, {"type": "dropdown", "title": "Fraction to Percentage", "prompt": "To write a fraction as a percentage, first convert it to a", "opts": ["decimal", "whole number", "ratio"], "c": 0, "exp": "Fraction → decimal → percentage. Two steps: 1/8 = 0.125 = 12.5%.", "tier": null}, {"type": "select", "title": "Fraction to Decimal", "prompt": "Click the decimal that equals 3/4:", "opts": ["0.34", "0.75", "0.25"], "c": 1, "exp": "3 ÷ 4 = 0.75.", "tier": null}, {"type": "select", "title": "Decimal to Percentage", "prompt": "Click the percentage that equals 0.6:", "opts": ["0.6%", "6%", "60%"], "c": 2, "exp": "Move the decimal 2 places right: 0.6 = 0.60 = 60%.", "tier": null}, {"type": "mc", "title": "Decimal to Fraction", "prompt": "Which fraction equals 0.75?", "opts": ["3/4", "1/4", "7/5", "2/3"], "c": 0, "exp": "0.75 = 75/100 = 3/4.", "tier": null}, {"type": "mc", "title": "Order of Operations", "prompt": "What is 2³ + 4?", "opts": ["10", "20", "12", "14"], "c": 2, "exp": "Exponent first: 2³ = 8. Then add: 8 + 4 = 12.", "tier": null, "nocalc": true}, {"type": "fill", "title": "Decimal to Percentage", "prompt": "Write <strong>0.45</strong> as a percentage. ______ %", "answers": ["45", "45%"], "exp": "Move the decimal 2 places right: 0.45 = 45%.", "tier": null, "ph": "Type your answer"}, {"divider": "Challenge Round", "sub": "Harder, GED-style questions with realistic numbers and more than one step. Take your time."}, {"type": "mc", "title": "Fractions in Real Life", "prompt": "In a class of 20 students, 3/5 passed the quiz. What percentage of the class passed?", "opts": ["35%", "15%", "12%", "60%"], "c": 3, "exp": "3/5 = 3 ÷ 5 = 0.6 = 60%.", "tier": "CHALLENGE"}, {"type": "mc", "title": "Multi-Step Order of Operations", "prompt": "What is (4 + 2)² − 5 × 3?", "opts": ["21", "51", "93", "33"], "c": 0, "exp": "Parentheses: 4 + 2 = 6. Exponent: 6² = 36. Multiply: 5 × 3 = 15. Subtract: 36 − 15 = 21.", "tier": "CHALLENGE", "nocalc": true}, {"type": "mc", "title": "Decimal to Fraction", "prompt": "A sign says 0.35 of the items are on sale. Which fraction is equal to 0.35?", "opts": ["35/10", "3/5", "7/20", "1/35"], "c": 2, "exp": "0.35 = 35/100. Divide top and bottom by 5 to simplify: 7/20.", "tier": "CHALLENGE"}, {"type": "mc", "title": "Comparing Values", "prompt": "Which of these is the greatest: 0.6, 5/8, or 58%?", "opts": ["0.6", "5/8", "58%", "They are all equal"], "c": 1, "exp": "Convert all three to decimals: 0.6, 0.625, 0.58. The greatest is 0.625, which is 5/8.", "tier": "CHALLENGE"}, {"type": "fill", "title": "Two-Step Conversion", "prompt": "A recipe uses 3/8 of a cup of oil. Write 3/8 as a percentage. ______ %", "answers": ["37.5", "37.5%"], "exp": "3 ÷ 8 = 0.375. Move the decimal 2 places right: 37.5%.", "tier": "CHALLENGE", "ph": "Type your answer"}, {"type": "fill", "title": "Test Score", "prompt": "Maya scored 18 out of 24 on a quiz. What percentage did she score? ______ %", "answers": ["75", "75%"], "exp": "18/24 = 3/4 = 0.75 = 75%.", "tier": "CHALLENGE", "ph": "Type your answer"}];
+window.__renderQuestions('extraRoot', EXTRA_ITEMS);
+</script>
+<script>
+document.getElementById("goExtra").addEventListener("click", function(){
+  document.querySelector('[data-tab="extra"]').click();
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
+</script>
 </body>
 </html>
