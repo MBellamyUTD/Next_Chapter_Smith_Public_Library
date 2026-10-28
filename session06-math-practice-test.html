@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Practice Test | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76;
+    --good:#3C7A64; --bad:#C94C4C;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--cream); color:var(--ink);}
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.6rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-60px; right:-60px; width:180px; height:180px; background:var(--coral); opacity:0.35; border-radius:50%;}
+  header h1{font-family:Georgia,serif; font-size:1.9rem; margin:0 0 0.4rem; position:relative;}
+  header p{margin:0; color:var(--gold); font-size:1rem; position:relative;}
+  .backlinks{position:relative; margin-top:0.8rem;}
+  .backlinks a{color:#EDEBF6; font-size:0.85rem; text-decoration:underline; margin:0 0.6rem;}
+  .wrap{max-width:760px; margin:1.6rem auto 3rem; padding:0 1.2rem;}
+
+  nav.tabs{display:flex; gap:0.5rem; background:#fff; border-radius:16px; padding:0.4rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:1.5rem;}
+  nav.tabs button{flex:1; border:none; background:transparent; padding:0.75rem 0.5rem; font-size:0.92rem; font-weight:600; color:var(--muted); border-radius:12px; cursor:pointer;}
+  nav.tabs button.active{background:var(--navy); color:#fff;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{background:#fff; border-radius:16px; padding:1.5rem 1.6rem; margin-bottom:1.3rem; box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+  .card h2{font-family:Georgia,serif; font-size:1.15rem; color:var(--navy); margin:0 0 0.5rem;}
+  .card p.sub{color:var(--muted); font-size:0.9rem; margin:0 0 1rem;}
+  .badge{display:inline-block; background:var(--gold); color:#2B2B2B; font-size:0.7rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px; margin-bottom:0.5rem;}
+  .prompt{font-size:1rem; margin:0.4rem 0 0.9rem; line-height:1.5;}
+
+  .options{display:flex; flex-direction:column; gap:0.55rem;}
+  .opt{text-align:left; padding:0.7rem 0.9rem; border:2px solid #E7E4DA; border-radius:10px; background:#fff; font-size:0.96rem; cursor:pointer;}
+  .opt:hover{border-color:var(--coral);}
+  .opt.correct{border-color:var(--good); background:#EAF5F0; font-weight:600;}
+  .opt.incorrect{border-color:var(--bad); background:#FBEAEA;}
+  .opt:disabled{color:#2B2B2B; opacity:1; cursor:default;}
+
+  .feedback{margin-top:0.7rem; font-size:0.92rem; padding:0.65rem 0.85rem; border-radius:10px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:#EAF5F0; color:var(--good);}
+  .feedback.bad{background:#FBEAEA; color:var(--bad);}
+
+  .passage{font-size:1rem; line-height:1.9;}
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
+
+  input[type=text], select{padding:0.6rem 0.8rem; border:2px solid #E7E4DA; border-radius:10px; font-size:0.95rem; max-width:260px;}
+  input[type=text]:focus, select:focus{outline:none; border-color:var(--navy);}
+  button.check{background:var(--coral); color:#fff; border:none; padding:0.6rem 1.3rem; border-radius:999px; font-weight:700; font-size:0.9rem; cursor:pointer; margin-top:0.6rem;}
+  button.check:hover{background:var(--coral-dark);}
+
+  .sliderRow{margin-bottom:1.5rem;}
+  .sliderRow .top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;}
+  .sliderRow .top span.val{font-weight:700; color:var(--coral);}
+  input[type=range]{width:100%; accent-color:var(--coral);}
+  .scaleLabels{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;}
+  button.save{background:var(--navy); color:#fff; border:none; padding:0.7rem 1.5rem; border-radius:999px; font-weight:700; font-size:0.95rem; cursor:pointer;}
+  button.save:hover{background:var(--navy-dark);}
+  .savedNote{font-size:0.85rem; color:var(--good); margin-top:0.6rem; display:none;}
+  .savedNote.show{display:block;}
+
+  .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+
+  .tierHead{margin:2rem 0 1rem; padding:1rem 1.2rem; border-left:5px solid var(--coral); background:#fff; border-radius:0 12px 12px 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .tierHead h3{font-family:Georgia,serif; color:var(--navy); margin:0 0 0.2rem; font-size:1.2rem;}
+  .tierHead p{margin:0; color:var(--muted); font-size:0.9rem;}
+  .badge.tierBadge{background:var(--coral); color:#fff; margin-left:0.4rem;}
+
+  .tierHead{margin:2rem 0 1rem; padding:1rem 1.2rem; border-left:5px solid var(--coral); background:#fff; border-radius:0 12px 12px 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .tierHead h3{font-family:Georgia,serif; color:var(--navy); margin:0 0 0.2rem; font-size:1.2rem;}
+  .tierHead p{margin:0; color:var(--muted); font-size:0.9rem;}
+  .badge.tierBadge{background:var(--coral); color:#fff; margin-left:0.4rem;}
+
+  .topbar{position:sticky; top:0; z-index:5; background:#fff; border-radius:0 0 14px 14px; box-shadow:0 4px 14px rgba(0,0,0,0.1); padding:0.6rem 1rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; font-weight:700; color:var(--navy); margin:-1.6rem -1.2rem 1.2rem; font-size:0.95rem;}
+  .topbar .timer{color:var(--coral);}
+  .intro p{margin:0.3rem 0; line-height:1.5;}
+  .opt.sel{border-color:var(--navy); background:#EAF1FA; font-weight:600;}
+  .badge.nocalc{background:#C94C4C; color:#fff; margin-left:0.4rem;}
+  .badge.calc{background:var(--good); color:#fff; margin-left:0.4rem;}
+  .qnum{color:var(--muted); font-size:0.8rem; font-weight:700; margin-bottom:0.2rem;}
+  .bigscore{font-family:Georgia,serif; font-size:2.6rem; color:var(--navy); margin:0.2rem 0;}
+  table.topics{width:100%; border-collapse:collapse; margin:0.8rem 0;}
+  table.topics td, table.topics th{padding:0.5rem 0.6rem; border-bottom:1px solid #E7E4DA; text-align:left; font-size:0.92rem;}
+  table.topics th{color:var(--navy);}
+  .bar{height:10px; background:#EEE; border-radius:99px; overflow:hidden; min-width:90px;}
+  .bar span{display:block; height:100%; background:var(--good);}
+  .rev{border-left:5px solid var(--good);}
+  .rev.miss{border-left-color:var(--bad);}
+  .rev .ans{font-size:0.92rem; margin:0.3rem 0;}
+  .warn{color:var(--bad); font-weight:700; margin-top:0.6rem; display:none;}
+  .row-actions{display:flex; gap:0.8rem; flex-wrap:wrap; align-items:center; margin:1.5rem 0;}
+  button.ghost{background:#fff; color:var(--navy); border:2px solid var(--navy); padding:0.65rem 1.3rem; border-radius:999px; font-weight:700; cursor:pointer;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Math Practice Test</h1>
+  <p>30 questions &bull; Sessions 2 to 6 &bull; about 90 minutes</p>
+  <div class="backlinks"><a href="sessions.html">&larr; All Sessions</a><a href="progress.html">My Progress</a></div>
+</header>
+<div class="wrap">
+  <div class="topbar"><span id="count">0 of 30 answered</span><span>Time: <span class="timer" id="timer">00:00</span></span></div>
+  <div id="testArea">
+    <div class="card intro">
+      <h2>Before you start</h2>
+      <p>This is a practice test in the style of the GED Math test. It covers what we have taught in Sessions 2 to 6. Your score is private and saved only on this device.</p>
+      <p><b>How it works:</b> pick an answer for every question. You can change your mind. Nothing is graded until you press <b>Finish and Score</b> at the bottom.</p>
+      <p><b>Part 1 (8 questions)</b> has no calculator, like the start of the real test. <b>Part 2 (22 questions)</b> allows a calculator.</p>
+      <p>Have scratch paper ready. The timer counts up so you can see your pace. It never stops you.</p>
+    </div>
+    <div id="testRoot"></div>
+    <div class="row-actions"><button class="save" id="finishBtn">Finish and Score</button><span class="warn" id="warn"></span></div>
+  </div>
+  <div id="results" style="display:none"></div>
+  <div class="row-actions" id="againRow" style="display:none"><button class="ghost" id="againBtn">Take It Again</button><a href="sessions.html" style="color:var(--navy);font-weight:700;">Back to All Sessions</a></div>
+  <p class="footNote">Want more? GED.com offers free <a href="https://tools.ged.com/en/math" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">test preview tutorials</a> for Math.</p>
+  <p class="footNote">These practice questions were written for our class. They are not official GED questions.</p>
+</div>
+<script>
+const ITEMS = [{"type": "mc", "tag": "Number Sense", "part": 1, "title": "Order of Operations", "prompt": "What is the value of 6 + 4 × 3 − 2²?", "exp": "Exponent first: 2² = 4. Then multiply: 4 × 3 = 12. Then 6 + 12 − 4 = 14.", "opts": ["26", "10", "14", "22"], "c": 2}, {"type": "mc", "tag": "Number Sense", "part": 1, "title": "Fractions", "prompt": "What is 3/4 + 2/3?", "exp": "Use a common denominator of 12: 9/12 + 8/12 = 17/12, which is 1 5/12.", "opts": ["1 5/12", "5/7", "1 1/12", "5/12"], "c": 0}, {"type": "fill", "tag": "Number Sense", "part": 1, "title": "Decimals", "prompt": "What is 0.6 × 0.5?", "answers": ["0.3", ".3", "0.30"], "exp": "6 × 5 = 30, and there are two decimal places in total, so the answer is 0.30 = 0.3.", "ph": "Type your answer"}, {"type": "fill", "tag": "Ratios & Percents", "part": 1, "title": "Percent of a Number", "prompt": "What is 20% of 150?", "answers": ["30"], "exp": "20% = 0.20, and 0.20 × 150 = 30. A shortcut: 10% of 150 is 15, so 20% is 30.", "ph": "Type your answer"}, {"type": "mc", "tag": "Algebra", "part": 1, "title": "Solve for x", "prompt": "Solve for x: 3x − 7 = 11", "exp": "Add 7 to both sides: 3x = 18. Then divide by 3: x = 6.", "opts": ["x = 4", "x = 18", "x = 3", "x = 6"], "c": 3}, {"type": "dropdown", "tag": "Algebra", "part": 1, "title": "Inequality", "prompt": "Solve 2x + 3 > 11. The answer is x ____ 4.", "opts": ["<", ">", "≤", "≥"], "c": 1, "exp": "Subtract 3: 2x > 8. Divide by 2: x > 4."}, {"type": "mc", "tag": "Graphs & Slope", "part": 1, "title": "Slope From Two Points", "prompt": "What is the slope of the line through (1, 2) and (3, 8)?", "exp": "Slope = change in y ÷ change in x = (8 − 2) ÷ (3 − 1) = 6 ÷ 2 = 3.", "opts": ["2", "3", "6", "1/3"], "c": 1}, {"type": "mc", "tag": "Geometry", "part": 1, "title": "Area of a Triangle", "prompt": "A triangle has a base of 10 and a height of 6. What is its area?", "exp": "Area = ½ × base × height = ½ × 10 × 6 = 30.", "opts": ["60", "30", "16", "36"], "c": 1}, {"type": "fill", "tag": "Ratios & Percents", "part": 2, "title": "Ratios", "prompt": "Apples and oranges are packed in the ratio 3 : 5. If there are 24 apples, how many oranges are there?", "answers": ["40"], "exp": "24 ÷ 3 = 8 groups. Each group has 5 oranges, so 8 × 5 = 40.", "ph": "Type your answer"}, {"type": "mc", "tag": "Ratios & Percents", "part": 2, "title": "Unit Rate", "prompt": "Rice costs $12.50 for 5 pounds. At that price, how much do 8 pounds cost?", "exp": "$12.50 ÷ 5 = $2.50 per pound. Then 8 × $2.50 = $20.00.", "opts": ["$16.00", "$25.00", "$18.75", "$20.00"], "c": 3}, {"type": "mc", "tag": "Ratios & Percents", "part": 2, "title": "Percent Increase", "prompt": "A price goes up from $80 to $92. What is the percent increase?", "exp": "Increase = $12. Percent increase = 12 ÷ 80 = 0.15 = 15%.", "opts": ["15%", "12%", "13%", "18%"], "c": 0}, {"type": "fill", "tag": "Ratios & Percents", "part": 2, "title": "Discount and Tax", "prompt": "A $60 jacket is 25% off. Then 8% sales tax is added to the sale price. What is the final cost, in dollars?", "answers": ["48.60", "48.6"], "exp": "25% off: $60 × 0.75 = $45. Then tax: $45 × 1.08 = $48.60.", "ph": "Dollars, like 12.50"}, {"type": "mc", "tag": "Ratios & Percents", "part": 2, "title": "Tip", "prompt": "A restaurant bill is $42.00. You leave a 20% tip. What is the total you pay?", "exp": "20% of $42 = $8.40. Total = $42.00 + $8.40 = $50.40.", "opts": ["$44.00", "$46.20", "$50.40", "$8.40"], "c": 2}, {"type": "mc", "tag": "Number Sense", "part": 2, "title": "Compare Numbers", "prompt": "Which of these is the greatest: 0.6, 5/8, 58%, or 0.059?", "exp": "Write each as a decimal: 0.6, 0.625, 0.58, 0.059. The greatest is 0.625, which is 5/8.", "opts": ["0.6", "58%", "0.059", "5/8"], "c": 3}, {"type": "fill", "tag": "Number Sense", "part": 2, "title": "Using the Calculator", "prompt": "Find the value of 3.5 × (2.4 + 1.6) − 4.2", "answers": ["9.8"], "exp": "Parentheses first: 2.4 + 1.6 = 4. Then 3.5 × 4 = 14. Then 14 − 4.2 = 9.8.", "ph": "Type your answer"}, {"type": "mc", "tag": "Algebra", "part": 2, "title": "Write an Expression", "prompt": "Which expression means “5 less than twice a number n”?", "exp": "“Twice a number” is 2n. “5 less than” means subtract 5 from it: 2n − 5. Watch the flip!", "opts": ["5 − 2n", "2n − 5", "2(n − 5)", "n − 10"], "c": 1}, {"type": "fill", "tag": "Algebra", "part": 2, "title": "Equation From Words", "prompt": "A plumber charges a $45 service fee plus $30 per hour. A job costs $135 in total. How many hours did the job take?", "answers": ["3"], "exp": "45 + 30h = 135. Subtract 45: 30h = 90. Divide by 30: h = 3.", "ph": "Hours"}, {"type": "mc", "tag": "Algebra", "part": 2, "title": "Equations With Parentheses", "prompt": "Solve for x: 4(x − 3) = 2x + 6", "exp": "Distribute: 4x − 12 = 2x + 6. Subtract 2x: 2x − 12 = 6. Add 12: 2x = 18. So x = 9.", "opts": ["x = 9", "x = 3", "x = 6", "x = 12"], "c": 0}, {"type": "fill", "tag": "Algebra", "part": 2, "title": "Inequality Word Problem", "prompt": "You have a $200 budget for books. You have already spent $60, and each new book costs $14. What is the greatest number of books you can still buy?", "answers": ["10"], "exp": "60 + 14b ≤ 200. Subtract 60: 14b ≤ 140. Divide by 14: b ≤ 10. So at most 10 books.", "ph": "Number of books"}, {"type": "dropdown", "tag": "Graphs & Slope", "part": 2, "title": "Slope and Intercept", "prompt": "The line y = −2x + 9 has a slope of ____.", "opts": ["−2", "2", "9", "−9"], "c": 0, "exp": "In y = mx + b, the slope is m, the number multiplied by x. Here m = −2. (The y-intercept is 9.)"}, {"type": "fill", "tag": "Graphs & Slope", "part": 2, "title": "Slope in Context", "prompt": "A plant is 4 inches tall in week 1 and 19 inches tall in week 6. What is its growth rate, in inches per week?", "answers": ["3"], "exp": "Slope = (19 − 4) ÷ (6 − 1) = 15 ÷ 5 = 3 inches per week.", "ph": "Inches per week"}, {"type": "mc", "tag": "Graphs & Slope", "part": 2, "title": "Write an Equation", "prompt": "A line has a slope of 3 and a y-intercept of −4. Which equation is the line?", "exp": "Use y = mx + b with m = 3 and b = −4: y = 3x − 4.", "opts": ["y = −4x + 3", "y = 3x + 4", "y = 3x − 4", "y = −3x − 4"], "c": 2}, {"type": "mc", "tag": "Graphs & Slope", "part": 2, "title": "Points on a Line", "prompt": "Which point is on the line y = 2x − 3?", "exp": "Test each point. For (4, 5): 2(4) − 3 = 5, which matches. For (2, 3): 2(2) − 3 = 1, not 3.", "opts": ["(2, 3)", "(3, 4)", "(5, 6)", "(4, 5)"], "c": 3}, {"type": "mc", "tag": "Geometry", "part": 2, "title": "Perimeter and Cost", "prompt": "A garden is 18 feet by 11 feet. Fencing costs $3 per foot. How much does it cost to fence all the way around it?", "exp": "Perimeter = 2(18) + 2(11) = 58 feet. Cost = 58 × $3 = $174.", "opts": ["$198", "$174", "$116", "$594"], "c": 1}, {"type": "fill", "tag": "Geometry", "part": 2, "title": "Area of a Triangle", "prompt": "A triangle has a base of 14 and a height of 9. What is its area?", "answers": ["63"], "exp": "Area = ½ × 14 × 9 = 63.", "ph": "Square units"}, {"type": "mc", "tag": "Geometry", "part": 2, "title": "Volume of a Box", "prompt": "A box is 15 inches long, 8 inches wide, and 6 inches tall. What is its volume?", "exp": "Volume = length × width × height = 15 × 8 × 6 = 720 cubic inches.", "opts": ["29 cubic inches", "360 cubic inches", "720 cubic inches", "240 cubic inches"], "c": 2}, {"type": "fill", "tag": "Geometry", "part": 2, "title": "Volume of a Cylinder", "prompt": "A cylinder has a radius of 5 inches and a height of 12 inches. What is its volume, to the nearest tenth? (Use the π key.)", "answers": ["942.5"], "exp": "V = π × r² × h = π × 25 × 12 = 300π ≈ 942.5 cubic inches.", "ph": "Cubic inches, nearest tenth"}, {"type": "mc", "tag": "Geometry", "part": 2, "title": "Volume of a Cone", "prompt": "A cone has a radius of 4 inches and a height of 9 inches. What is its volume, to the nearest tenth?", "exp": "V = ⅓ × π × r² × h = ⅓ × π × 16 × 9 = 48π ≈ 150.8 cubic inches.", "opts": ["150.8 cubic inches", "452.4 cubic inches", "113.1 cubic inches", "50.3 cubic inches"], "c": 0}, {"type": "fill", "tag": "Geometry", "part": 2, "title": "Watch the Diameter", "prompt": "A can is 12 inches across the top and 7 inches tall. What is its volume, to the nearest tenth?", "answers": ["791.7"], "exp": "“Across” is the diameter, so the radius is 6. V = π × 6² × 7 = 252π ≈ 791.7 cubic inches.", "ph": "Cubic inches, nearest tenth"}, {"type": "mc", "tag": "Geometry", "part": 2, "title": "Cone and Cylinder", "prompt": "A cylinder holds 240 cubic centimeters. A cone has the same base and height. How much does the cone hold?", "exp": "A cone holds one-third as much as a cylinder with the same base and height: 240 ÷ 3 = 80.", "opts": ["120 cubic centimeters", "80 cubic centimeters", "60 cubic centimeters", "160 cubic centimeters"], "c": 1}];
+(function(){
+  const KEY="math-practice-test-07";
+  const root=document.getElementById("testRoot");
+  const answers={}; let startTime=null, timerId=null, finished=false;
+  function norm(s){ return String(s).toLowerCase().replace(/[$,\s]/g,"").replace(/^0+(?=\d)/,""); }
+  function startTimer(){ if(startTime) return; startTime=Date.now(); timerId=setInterval(tick,1000); }
+  function tick(){ const s=Math.floor((Date.now()-startTime)/1000); document.getElementById("timer").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+  function updateCount(){ const n=Object.keys(answers).filter(k=>String(answers[k]).trim()!=="").length; document.getElementById("count").textContent=n+" of "+ITEMS.length+" answered"; }
+  function isCorrect(i){
+    const q=ITEMS[i], a=answers[i];
+    if(a===undefined||String(a).trim()==="") return false;
+    if(q.type==="fill") return q.answers.map(norm).includes(norm(a));
+    return Number(a)===q.c;
+  }
+  function answerText(i,val){
+    const q=ITEMS[i];
+    if(val===undefined||String(val).trim()==="") return "(no answer)";
+    if(q.type==="fill") return String(val);
+    return q.opts[Number(val)];
+  }
+  function build(){
+    root.innerHTML=""; 
+    let lastPart=0;
+    ITEMS.forEach((q,i)=>{
+      if(q.part!==lastPart){
+        lastPart=q.part;
+        const d=document.createElement("div"); d.className="tierHead";
+        d.innerHTML= q.part===1 ? "<h3>Part 1: No Calculator</h3><p>Questions 1 to 8. Work these by hand. Use your scratch paper.</p>" : "<h3>Part 2: Calculator Allowed</h3><p>Questions 9 to 30. Use a calculator. Use the π key for circles.</p>";
+        root.appendChild(d);
+      }
+      const card=document.createElement("div"); card.className="card"; card.id="q"+i;
+      let html='<div class="qnum">QUESTION '+(i+1)+' OF '+ITEMS.length+'</div><h2>'+q.title+'</h2><p class="prompt">'+q.prompt+'</p>';
+      if(q.type==="mc") html+='<div class="options">'+q.opts.map((o,k)=>'<button class="opt" data-i="'+k+'">'+o+'</button>').join("")+'</div>';
+      else if(q.type==="fill") html+='<input type="text" placeholder="'+q.ph+'" data-q="'+i+'">';
+      else html+='<select data-q="'+i+'"><option value="">choose one</option>'+q.opts.map((o,k)=>'<option value="'+k+'">'+o+'</option>').join("")+'</select>';
+      card.innerHTML=html; root.appendChild(card);
+      if(q.type==="mc"){
+        const btns=card.querySelectorAll(".opt");
+        btns.forEach(b=>b.addEventListener("click",()=>{ if(finished) return; startTimer(); btns.forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); answers[i]=Number(b.dataset.i); updateCount(); }));
+      } else if(q.type==="fill"){
+        card.querySelector("input").addEventListener("input",e=>{ if(finished) return; startTimer(); answers[i]=e.target.value; updateCount(); });
+      } else {
+        card.querySelector("select").addEventListener("change",e=>{ if(finished) return; startTimer(); answers[i]=e.target.value; updateCount(); });
+      }
+    });
+    updateCount();
+  }
+  function finish(force){
+    const unanswered=ITEMS.length-Object.keys(answers).filter(k=>String(answers[k]).trim()!=="").length;
+    const warn=document.getElementById("warn");
+    if(unanswered>0 && !force){ warn.style.display="block"; warn.textContent=unanswered+" question"+(unanswered>1?"s are":" is")+" blank. A blank is always wrong, so give it your best guess. Press Finish again to score anyway."; document.getElementById("finishBtn").dataset.force="1"; return; }
+    finished=true; if(timerId) clearInterval(timerId);
+    let score=0; const by={}; 
+    ITEMS.forEach((q,i)=>{ const ok=isCorrect(i); if(ok) score++; by[q.tag]=by[q.tag]||{c:0,t:0}; by[q.tag].t++; if(ok) by[q.tag].c++; });
+    const secs=startTime?Math.floor((Date.now()-startTime)/1000):0;
+    const pct=Math.round(score/ITEMS.length*100);
+    const SESS={"Number Sense":"Sessions 2 and 3","Ratios & Percents":"Session 3","Algebra":"Session 4","Graphs & Slope":"Session 5","Geometry":"Session 6"};
+    let h='<div class="card"><h2>Your Results</h2><div class="bigscore">'+score+' / '+ITEMS.length+' ('+pct+'%)</div><p class="sub">Time: '+Math.floor(secs/60)+' min '+(secs%60)+' sec. This is a practice score, not an official GED score. The official GED Ready on Nov 2 is the one that counts.</p>';
+    h+='<table class="topics"><tr><th>Topic</th><th>Score</th><th></th><th>Review</th></tr>';
+    Object.keys(by).forEach(t=>{ const b=by[t], p=Math.round(b.c/b.t*100); h+='<tr><td>'+t+'</td><td>'+b.c+' / '+b.t+'</td><td><div class="bar"><span style="width:'+p+'%"></span></div></td><td>'+(p>=80?"Strong":"Review "+SESS[t])+'</td></tr>'; });
+    h+='</table><p class="sub">Topics marked Review point to the session slides and cheat sheet to look at again. Bring questions to Thursday office hours.</p></div>';
+    h+='<div class="tierHead"><h3>Review Every Question</h3><p>Green means correct. Red means review the explanation.</p></div>';
+    ITEMS.forEach((q,i)=>{
+      const ok=isCorrect(i);
+      const corr=q.type==="fill"?q.answers[0]:q.opts[q.c];
+      h+='<div class="card rev '+(ok?"":"miss")+'"><div class="qnum">QUESTION '+(i+1)+' &bull; '+(ok?"CORRECT":"MISSED")+'</div><h2>'+q.title+'</h2><p class="prompt">'+q.prompt+'</p><p class="ans"><b>Your answer:</b> '+answerText(i,answers[i])+(ok?"":'<br><b>Correct answer:</b> '+corr)+'</p><p class="ans">'+q.exp+'</p></div>';
+    });
+    document.getElementById("results").innerHTML=h;
+    document.getElementById("testArea").style.display="none";
+    document.getElementById("results").style.display="block";
+    document.getElementById("againRow").style.display="flex";
+    window.scrollTo(0,0);
+    try{ localStorage.setItem(KEY,JSON.stringify({score,total:ITEMS.length,date:new Date().toISOString(),by})); localStorage.setItem("completed-week-07",new Date().toISOString()); }catch(e){}
+  }
+  document.getElementById("finishBtn").addEventListener("click",e=>finish(e.target.dataset.force==="1"));
+  document.getElementById("againBtn").addEventListener("click",()=>location.reload());
+  build();
+})();
+</script>
+</body>
+</html>
