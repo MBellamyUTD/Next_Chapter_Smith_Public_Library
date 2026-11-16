@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 9 Take-Home | Next Chapter @ Smith Public Library</title>
+<style>
+  :root{
+    --navy:#004B97; --navy-dark:#003a75; --coral:#F58427; --coral-dark:#d96f1a;
+    --gold:#FCB41A; --cream:#FFFBF2; --ink:#2B2B2B; --muted:#6B6B76;
+    --good:#3C7A64; --bad:#C94C4C;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--cream); color:var(--ink);}
+  header{background:var(--navy); color:#fff; padding:2.2rem 1.5rem 2.6rem; text-align:center; position:relative; overflow:hidden;}
+  header::before{content:""; position:absolute; top:-60px; right:-60px; width:180px; height:180px; background:var(--coral); opacity:0.35; border-radius:50%;}
+  header h1{font-family:Georgia,serif; font-size:1.9rem; margin:0 0 0.4rem; position:relative;}
+  header p{margin:0; color:var(--gold); font-size:1rem; position:relative;}
+  .backlinks{position:relative; margin-top:0.8rem;}
+  .backlinks a{color:#EDEBF6; font-size:0.85rem; text-decoration:underline; margin:0 0.6rem;}
+  .wrap{max-width:760px; margin:1.6rem auto 3rem; padding:0 1.2rem;}
+
+  nav.tabs{display:flex; gap:0.5rem; background:#fff; border-radius:16px; padding:0.4rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:1.5rem;}
+  nav.tabs button{flex:1; border:none; background:transparent; padding:0.75rem 0.5rem; font-size:0.92rem; font-weight:600; color:var(--muted); border-radius:12px; cursor:pointer;}
+  nav.tabs button.active{background:var(--navy); color:#fff;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{background:#fff; border-radius:16px; padding:1.5rem 1.6rem; margin-bottom:1.3rem; box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+  .card h2{font-family:Georgia,serif; font-size:1.15rem; color:var(--navy); margin:0 0 0.5rem;}
+  .card p.sub{color:var(--muted); font-size:0.9rem; margin:0 0 1rem;}
+  .badge{display:inline-block; background:var(--gold); color:#2B2B2B; font-size:0.7rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px; margin-bottom:0.5rem;}
+  .prompt{font-size:1rem; margin:0.4rem 0 0.9rem; line-height:1.5;}
+
+  .options{display:flex; flex-direction:column; gap:0.55rem;}
+  .opt{text-align:left; padding:0.7rem 0.9rem; border:2px solid #E7E4DA; border-radius:10px; background:#fff; font-size:0.96rem; cursor:pointer;}
+  .opt:hover{border-color:var(--coral);}
+  .opt.correct{border-color:var(--good); background:#EAF5F0; font-weight:600;}
+  .opt.incorrect{border-color:var(--bad); background:#FBEAEA;}
+  .opt:disabled{color:#2B2B2B; opacity:1; cursor:default;}
+
+  .feedback{margin-top:0.7rem; font-size:0.92rem; padding:0.65rem 0.85rem; border-radius:10px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:#EAF5F0; color:var(--good);}
+  .feedback.bad{background:#FBEAEA; color:var(--bad);}
+
+  .passage{font-size:1rem; line-height:1.9;}
+  .seg{cursor:pointer; padding:0.05rem 0.1rem; border-radius:4px;}
+  .seg:hover{background:#FCEFD0;}
+  .seg.correct{background:#CDE9DD;}
+  .seg.incorrect{background:#F6CFCF;}
+
+  input[type=text], select{padding:0.6rem 0.8rem; border:2px solid #E7E4DA; border-radius:10px; font-size:0.95rem; max-width:260px;}
+  input[type=text]:focus, select:focus{outline:none; border-color:var(--navy);}
+  button.check{background:var(--coral); color:#fff; border:none; padding:0.6rem 1.3rem; border-radius:999px; font-weight:700; font-size:0.9rem; cursor:pointer; margin-top:0.6rem;}
+  button.check:hover{background:var(--coral-dark);}
+
+  .sliderRow{margin-bottom:1.5rem;}
+  .sliderRow .top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;}
+  .sliderRow .top span.val{font-weight:700; color:var(--coral);}
+  input[type=range]{width:100%; accent-color:var(--coral);}
+  .scaleLabels{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;}
+  button.save{background:var(--navy); color:#fff; border:none; padding:0.7rem 1.5rem; border-radius:999px; font-weight:700; font-size:0.95rem; cursor:pointer;}
+  button.save:hover{background:var(--navy-dark);}
+  .savedNote{font-size:0.85rem; color:var(--good); margin-top:0.6rem; display:none;}
+  .savedNote.show{display:block;}
+
+  .footNote{text-align:center; color:var(--muted); font-size:0.82rem; margin-top:1rem;}
+
+  .tierHead{margin:2rem 0 1rem; padding:1rem 1.2rem; border-left:5px solid var(--coral); background:#fff; border-radius:0 12px 12px 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .tierHead h3{font-family:Georgia,serif; color:var(--navy); margin:0 0 0.2rem; font-size:1.2rem;}
+  .tierHead p{margin:0; color:var(--muted); font-size:0.9rem;}
+  .badge.tierBadge{background:var(--coral); color:#fff; margin-left:0.4rem;}
+
+  .tierHead{margin:2rem 0 1rem; padding:1rem 1.2rem; border-left:5px solid var(--coral); background:#fff; border-radius:0 12px 12px 0; box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .tierHead h3{font-family:Georgia,serif; color:var(--navy); margin:0 0 0.2rem; font-size:1.2rem;}
+  .tierHead p{margin:0; color:var(--muted); font-size:0.9rem;}
+  .badge.tierBadge{background:var(--coral); color:#fff; margin-left:0.4rem;}
+.readCard{border-left:6px solid var(--navy);}
+  .readPassage{font-family:Georgia,serif; font-size:1.05rem; line-height:1.75; margin:0.6rem 0 0.8rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Session 9 Take-Home</h1>
+  <p>10 minutes &bull; reading comprehension</p>
+  <div class="backlinks">
+    <a href="sessions.html">&larr; All Sessions</a>
+    <a href="progress.html">My Progress</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="practice">Practice</button>
+    <button class="tab-btn" data-tab="extra">Extra Practice</button>
+    <button class="tab-btn" data-tab="confidence">Check In</button>
+  </nav>
+
+  <section class="panel active" id="panel-practice"><div id="coreRoot"></div>
+    <div class="card" style="text-align:center; border:2px dashed var(--coral);">
+      <h2>Want more practice?</h2>
+      <p class="sub">The <strong>Extra Practice</strong> tab has more questions in every format, plus a Challenge Round of harder GED-style problems.</p>
+      <button class="save" id="goExtra">Go to Extra Practice &rarr;</button>
+    </div>
+</section>
+
+  <section class="panel" id="panel-extra"><div id="extraRoot"></div></section>
+
+  <section class="panel" id="panel-confidence">
+    <div class="card">
+      <h2>How Confident Do You Feel Right Now?</h2>
+      <p class="sub">Be honest &mdash; this is just for you to track how you're feeling week to week. No wrong answers.</p>
+
+      <div class="sliderRow" data-subject="Math">
+        <div class="top"><span>Math</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="RLA">
+        <div class="top"><span>Reading &amp; Writing (RLA)</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Science">
+        <div class="top"><span>Science</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+      <div class="sliderRow" data-subject="Social Studies">
+        <div class="top"><span>Social Studies</span><span class="val">3</span></div>
+        <input type="range" min="1" max="5" value="3">
+        <div class="scaleLabels"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+
+      <button class="save" id="saveConfidence">Save My Check-In</button>
+      <div class="savedNote" id="confidenceSaved">Saved! Check My Progress to see your trend.</div>
+    </div>
+  </section>
+
+  <p class="footNote">Want more practice on your own? GED.com offers free, untimed <a href="https://tools.ged.com/en/rla" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">test preview tutorials</a> for every subject (also available <a href="https://tools.ged.com/es/rla" target="_blank" rel="noopener" style="color:var(--navy); font-weight:700;">en Espa&ntilde;ol</a>).</p>
+  <p class="footNote">Your answers are saved on this device only. If you switch computers, they won't carry over. Questions? Bring them to Thursday office hours.</p>
+</div>
+
+<script>
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+  });
+});
+document.querySelectorAll(".sliderRow input[type=range]").forEach(input => {
+  input.addEventListener("input", () => {
+    input.closest(".sliderRow").querySelector(".val").textContent = input.value;
+  });
+});
+(function(){
+  try {
+    const raw = localStorage.getItem("confidence-week-09");
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.querySelectorAll(".sliderRow").forEach(row => {
+        const subject = row.dataset.subject;
+        if (data[subject] !== undefined) {
+          const input = row.querySelector("input[type=range]");
+          input.value = data[subject];
+          row.querySelector(".val").textContent = data[subject];
+        }
+      });
+    }
+  } catch (e) {}
+})();
+document.getElementById("saveConfidence").addEventListener("click", () => {
+  const data = {};
+  document.querySelectorAll(".sliderRow").forEach(row => {
+    data[row.dataset.subject] = row.querySelector("input[type=range]").value;
+  });
+  localStorage.setItem("confidence-week-09", JSON.stringify(data));
+  localStorage.setItem("completed-week-09", new Date().toISOString());
+  const note = document.getElementById("confidenceSaved");
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 3000);
+});
+</script>
+
+<script>
+(function(){
+  const BADGES = {mc:"MULTIPLE CHOICE", fill:"FILL IN THE BLANK", dropdown:"DROP-DOWN", select:"SELECT-AN-AREA"};
+  function norm(s){ return String(s).toLowerCase().replace(/[$,\s]/g,"").replace(/^0+(?=\d)/,""); }
+  function showFeedback(fb, ok, q){
+    fb.className = "feedback show " + (ok ? "good" : "bad");
+    fb.textContent = (ok ? "Correct! " : "Not quite. ") + q.exp;
+  }
+  function render(rootId, items){
+    const root = document.getElementById(rootId);
+    items.forEach(q => {
+      if (q.passage) {
+        const pc = document.createElement("div");
+        pc.className = "card readCard";
+        pc.innerHTML = '<span class="badge">READ THIS FIRST</span><h2>' + q.passage + '</h2><p class="readPassage">' + q.text + '</p><p class="sub">Read it once all the way through, then answer the questions below. You can look back at it any time.</p>';
+        root.appendChild(pc);
+        return;
+      }
+      if (q.divider) {
+        const d = document.createElement("div");
+        d.className = "tierHead";
+        d.innerHTML = "<h3>" + q.divider + "</h3><p>" + q.sub + "</p>";
+        root.appendChild(d);
+        return;
+      }
+      const card = document.createElement("div");
+      card.className = "card";
+      let html = '<span class="badge">' + BADGES[q.type] + '</span>';
+      if (q.tier) html += '<span class="badge tierBadge">' + q.tier + '</span>';
+      html += '<h2>' + q.title + '</h2><p class="prompt">' + q.prompt + '</p>';
+      if (q.type === "mc") {
+        html += '<div class="options">' + q.opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+o+'</button>').join("") + '</div>';
+      } else if (q.type === "fill") {
+        html += '<input type="text" placeholder="' + q.ph + '"> <button class="check">Check My Answer</button>';
+      } else if (q.type === "dropdown") {
+        html += '<select><option value="">choose one</option>' + q.opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join("") + '</select> <button class="check">Check My Answer</button>';
+      } else if (q.type === "select") {
+        html += '<p class="passage">' + q.opts.map((o,i)=>'<span class="seg" data-i="'+i+'">'+o+'</span>').join(" &nbsp;&nbsp; ") + '</p>';
+      }
+      html += '<div class="feedback"></div>';
+      card.innerHTML = html;
+      root.appendChild(card);
+      const fb = card.querySelector(".feedback");
+
+      if (q.type === "mc") {
+        const btns = card.querySelectorAll(".opt");
+        btns.forEach(b => b.addEventListener("click", () => {
+          const ok = Number(b.dataset.i) === q.c;
+          btns.forEach(x => x.disabled = true);
+          b.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) btns[q.c].classList.add("correct");
+          showFeedback(fb, ok, q);
+        }));
+      } else if (q.type === "fill") {
+        card.querySelector(".check").addEventListener("click", () => {
+          const v = norm(card.querySelector("input").value);
+          if (!v) { fb.className = "feedback show bad"; fb.textContent = "Type an answer first."; return; }
+          showFeedback(fb, q.answers.map(norm).includes(v), q);
+        });
+      } else if (q.type === "dropdown") {
+        card.querySelector(".check").addEventListener("click", () => {
+          const v = card.querySelector("select").value;
+          if (v === "") { fb.className = "feedback show bad"; fb.textContent = "Pick an option from the menu first."; return; }
+          showFeedback(fb, Number(v) === q.c, q);
+        });
+      } else if (q.type === "select") {
+        const segs = card.querySelectorAll(".seg");
+        segs.forEach(s => s.addEventListener("click", () => {
+          const ok = Number(s.dataset.i) === q.c;
+          segs.forEach(x => x.style.pointerEvents = "none");
+          s.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) segs[q.c].classList.add("correct");
+          showFeedback(fb, ok, q);
+        }));
+      }
+    });
+  }
+  window.__renderQuestions = render;
+})();
+</script>
+<script>
+const CORE_ITEMS = [{"passage": "More Than Books", "text": "Public libraries are no longer just places to borrow books. Over the past twenty years, many have added computer labs, job-search help, and free classes. In one Texas city, the library now lends mobile hotspots so families without home internet can get online. Another library offers tax help every spring and tutoring for students after school. Librarians say these changes respond to what neighbors actually need. As more services moved online, people who lacked a computer or a connection risked being left behind. Libraries stepped in to fill that gap. Today, a visit to the library might mean checking out a novel, but it could just as easily mean applying for a job, learning English, or studying for the GED."}, {"type": "mc", "title": "Main Idea", "prompt": "What is the main idea of the passage?", "exp": "The main idea covers the whole passage. Hotspots are one example, and the passage never says libraries are closing.", "tier": null, "opts": ["Libraries lend mobile hotspots.", "Libraries have grown beyond books to meet what their communities need.", "Libraries are closing because people use the internet.", "Tax help is the most important library service."], "c": 1}, {"type": "fill", "title": "Find the Detail", "prompt": "What do libraries in one Texas city lend so families can get online? (two words)", "answers": ["mobile hotspots", "mobile hotspot", "hotspots", "hotspot"], "ph": "Type your answer", "exp": "The passage says the library “now lends mobile hotspots.”", "tier": null}, {"type": "dropdown", "title": "Words in Context", "prompt": "In the passage, “fill that gap” most nearly means:", "exp": "The sentence before it talks about people being left behind without a computer. The gap is a missing service, and libraries provided it.", "tier": null, "opts": ["provide a missing service", "repair a hole in a building", "take a break in time"], "c": 0}, {"type": "select", "title": "Supporting Detail", "prompt": "Click the sentence that gives a specific example:", "exp": "A specific example names a real place and a real service. The other sentences make broad statements.", "tier": null, "opts": ["Public libraries are no longer just places to borrow books.", "Today, a visit to the library might mean checking out a novel.", "In one Texas city, the library now lends mobile hotspots so families without home internet can get online."], "c": 2}, {"type": "mc", "title": "Cause and Effect", "prompt": "According to the passage, why did libraries add online help?", "exp": "The passage says that as services moved online, people without a computer or connection risked being left behind.", "tier": null, "opts": ["Books became too expensive to buy.", "Librarians wanted to close the book section.", "Schools asked them to stop tutoring.", "People without a computer or connection risked being left behind."], "c": 3}];
+window.__renderQuestions('coreRoot', CORE_ITEMS);
+</script>
+<script>
+const EXTRA_ITEMS = [{"passage": "The Last Bus", "text": "Marisol checked her watch again. The last bus was already ten minutes late, and the wind had begun to bite through her thin jacket. She gripped the folder in her lap, the one that held her résumé and the letter from the school. Across the street, a man was closing his shop for the night. He glanced at her, hesitated, and then crossed over. “Bus is usually on time,” he said. “Mind if I wait with you?” She almost said no. She had learned not to trust kindness that came too easily. But her fingers were numb, and the street was empty. “Okay,” she said. They stood in silence until two yellow headlights swung around the corner. “Good luck tomorrow,” the man said, nodding at her folder. Marisol blinked. She had not mentioned tomorrow at all."}, {"type": "mc", "title": "Inference", "prompt": "What can the reader infer about the folder Marisol is holding?", "exp": "A résumé and a letter from the school, plus the man's “Good luck tomorrow,” point to an important event.", "tier": null, "opts": ["It holds papers she needs for something important tomorrow.", "It holds a gift for the shop owner.", "It is empty and she is just carrying it.", "It belongs to the bus driver."], "c": 0}, {"type": "dropdown", "title": "Character", "prompt": "Marisol almost says no to the man because she", "exp": "The passage says, “She had learned not to trust kindness that came too easily.”", "tier": null, "opts": ["dislikes riding the bus", "is angry that the bus is late", "has learned to be careful about trusting kindness"], "c": 2}, {"type": "select", "title": "Kindness in the Text", "prompt": "Click the sentence that shows the man is being kind:", "exp": "He notices she is alone and offers company. That is an action showing kindness.", "tier": null, "opts": ["“Bus is usually on time,” he said. “Mind if I wait with you?”", "Marisol checked her watch again.", "But her fingers were numb, and the street was empty."], "c": 0}, {"type": "mc", "title": "Why She Blinked", "prompt": "Why does Marisol blink at the end?", "exp": "She had not told him about tomorrow. He guessed from the folder, and it caught her off guard.", "tier": null, "opts": ["She is startled by the bus headlights.", "She is angry he waited with her.", "She is surprised that he guessed something about her life.", "She forgot her folder."], "c": 2}, {"type": "fill", "title": "Find the Detail", "prompt": "What is Marisol holding in her lap? (one word)", "answers": ["folder", "afolder"], "ph": "One word", "exp": "“She gripped the folder in her lap.”", "tier": null}, {"passage": "Sleep and Learning", "text": "Many adults think staying up late to study will help them remember more. Research suggests the opposite. During sleep, the brain sorts the day's information and stores what matters. Students who sleep well after studying tend to recall more facts than students who skip sleep. A short nap can help too, but only if it lasts under thirty minutes. Longer naps often leave people groggy. Many experts recommend that most adults get seven to nine hours of sleep each night. A simple plan is to study in the evening, review for ten minutes before bed, and then get a full night's rest."}, {"type": "mc", "title": "Main Idea", "prompt": "What is the main idea of this passage?", "exp": "Every detail points back to sleep helping memory.", "tier": null, "opts": ["Sleeping well after studying helps your brain keep what you learned.", "Naps are better than a full night of sleep.", "Adults should never study at night.", "Staying up late is the best way to remember facts."], "c": 0}, {"type": "fill", "title": "Find the Detail", "prompt": "How many hours of sleep do many experts recommend for most adults? (Type it like 1 to 2)", "answers": ["7 to 9", "7to9", "7-9", "7–9"], "ph": "Type it like 1 to 2", "exp": "“Seven to nine hours of sleep each night.”", "tier": null}, {"type": "dropdown", "title": "Details", "prompt": "According to the passage, a short nap helps only if it lasts", "exp": "“…only if it lasts under thirty minutes.”", "tier": null, "opts": ["over an hour", "under thirty minutes", "about two hours"], "c": 1}, {"divider": "Challenge Round", "sub": "Harder questions about evidence and purpose. Look back at the passage for each one."}, {"type": "mc", "title": "Best Evidence", "prompt": "Which detail best supports the claim that sleep helps memory?", "exp": "Evidence directly connects the claim to a result. Only this sentence links sleep to remembering facts.", "tier": "CHALLENGE", "opts": ["A short nap can leave you groggy.", "Many adults stay up late.", "Experts suggest studying in the evening.", "Students who sleep well after studying tend to recall more facts."], "c": 3}, {"type": "mc", "title": "Author's Purpose", "prompt": "Why did the author most likely write this passage?", "exp": "The passage explains and then gives a plan. It does not tell a story or promote a product.", "tier": "CHALLENGE", "opts": ["To convince readers to stop studying.", "To tell a story about a tired student.", "To explain how sleep helps learning and offer a simple plan.", "To sell a sleep product."], "c": 2}];
+window.__renderQuestions('extraRoot', EXTRA_ITEMS);
+</script>
+
+<script>
+document.getElementById("goExtra").addEventListener("click", function(){
+  document.querySelector('[data-tab="extra"]').click();
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
+</script>
+</body>
+</html>
